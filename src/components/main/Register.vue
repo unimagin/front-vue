@@ -158,14 +158,8 @@ export default {
   justify-content: center;
   align-content: center;
   position: fixed;
-
   background: url("http://www.etcp.cn/static/images/index_img2.png") no-repeat;
   background-size: 100% 100%;
-  /* width: 100%;
-  height: 840px;
-  background-size: cover;
-  overflow: hidden; */
-  /* background-color: gray; */
 }
 
 .login-wrap {

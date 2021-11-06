@@ -62,8 +62,12 @@ const store = createStore({
                 axios.post('/api/user/edit', user)
                     .then(resp => {
                         const user = resp.data.user;
-                        localStorage.setItem('user', user)
-                        commit('selfEdit', user)
+                        var storageUser=JSON.parse(localStorage.getItem('user'));
+                        console.log(storageUser);
+                        storageUser.email=resp.data.email;
+                        storageUser.bank_number=resp.data.bank_number
+                        localStorage.setItem('user', storageUser)
+                        commit('selfEdit', storageUser)
                         resolve(resp)
                     })
                     .catch(err => {
