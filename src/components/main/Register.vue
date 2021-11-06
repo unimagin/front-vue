@@ -169,19 +169,6 @@ export default {
 }
 
 .login-wrap {
-  /* background-size: cover;
-  width: 600px;
-  height: 500px;
-  margin: 215px auto;
-  overflow: hidden;
-  padding-top: 0px;
-  line-height: 20px;
-  
-border-radius:30px;
-  border: 2px solid;
-  text-align: center; */
-
-
   position: absolute;
   /*定位方式绝对定位absolute*/
   top: 50%;

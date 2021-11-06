@@ -14,7 +14,7 @@
             index="1"
             route="/user/reservation"
             style="margin-left: 150px"
-            >预约车位</el-menu-item
+            >主&nbsp;页</el-menu-item
           >
           <el-menu-item
             class="nav"
