@@ -61,7 +61,7 @@ const router = new createRouter({
 router.beforeEach((to, from, next) => {
     if (to.path.startsWith("/user")) {
         if (localStorage.getItem("token")) {
-            store.commit('flesh');
+            // store.commit('flesh');
             next();
         } else {
             alert("请先登录！！");

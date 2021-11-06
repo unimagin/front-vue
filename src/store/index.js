@@ -8,10 +8,10 @@ const store = createStore({
         user: localStorage.getItem('user')
     },
     mutations: {
-        flesh(state) {
+       /* flesh(state) {
             state.user = localStorage.getItem('user');
             state.token = localStorage.getItem('token');
-        },
+        },*/
         auth_success(state, {token, user}) {
             state.token = token;
             state.user = user;
