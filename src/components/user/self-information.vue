@@ -4,17 +4,20 @@
       <el-aside width="200px" style="margin-right: 120px">
         <el-row class="title"> 个人中心</el-row>
         <el-menu router="true">
-          <el-menu-item class="list" index="1" route="/user/self-information"
-          >基本信息
-          </el-menu-item
-          >
-          <el-menu-item class="list" index="2">预约记录</el-menu-item>
+          <el-menu-item class="list" index="1" route="/user/self-information">
+            <el-icon :size="20"><user /></el-icon>基本信息
+          </el-menu-item>
+          <el-menu-item class="list" index="2">
+            <el-icon :size="20"><document /></el-icon>预约记录
+          </el-menu-item>
         </el-menu>
       </el-aside>
       <el-main style="height: 100%">
         <el-form
-            ref="infoForm"
-            label-width="100px"
+          ref="infoForm"
+          label-width="100px"
+          :rules="rules"
+          :model="user"
         >
           <el-form-item label="手机号码：">
             <el-input v-model="user.phone" readonly></el-input>
@@ -23,11 +26,11 @@
             <el-input v-model="user.email"></el-input>
           </el-form-item>
           <el-form-item
-              label="银行卡号："
-              prop="bank_number"
-              style="margin-bottom: 40px"
+            label="银行卡号："
+            prop="bank_number"
+            style="margin-bottom: 40px"
           >
-            <el-input v-model="user.bank_number"></el-input>
+            <el-input v-model="user.bank_number" prop="bank_number"></el-input>
           </el-form-item>
           <el-form-item style="margin-left: 120px">
             <el-button type="primary" @click="saveEdit">保存</el-button>
@@ -39,9 +42,9 @@
 </template>
 
 <script>
-
+import { Document, User } from "@element-plus/icons";
 export default {
-  data() {
+  data () {
     var emailCheck = (rule, value, callback) => {
       const reg = /^([a-zA-Z0-9]+[-_\.]?)+@[a-zA-Z0-9]+\.[a-z]+$/;
       if (value == '' || value == undefined || value == null) {
@@ -59,53 +62,74 @@ export default {
         phone: "123",
         email: "123",
         bank_number: "123",
+      },
+      rules: {
+        email: [{
+          required: true,
+          message: '请输入邮箱',
+          trigger: 'blur'
+        },
+        {
+          validator: emailCheck,
+          trigger: 'blur'
+        }
+        ],
+        bank_number: [
+          {
+            required: true,
+            message: "请输入银行卡号",
+            trigger: 'blur'
+          }
+        ]
       }
-      /*  rules: {
-          email: [
-            {
-              validator: emailCheck,
-              trigger: 'blur'
-            }
-          ],
-          bank_number: [
-            {
-              required: true,
-              message: "请输入银行卡号",
-              trigger: 'blur'
-            }
-          ]
-        }*/
     }
+  },
+  components: {
+    Document,
+    User
   },
   methods: {
-    saveEdit() {
+    saveEdit () {
       console.log("hhhh");
-      /*  this.$refs["infoForm"].validate(valid => {
-          if (valid) {*/
-      console.log(this.user)
-      this.$showLoading("正在保存")
-      this.$store.dispatch("SaveEdit", this.user)
-          .then(() => {
-            this.$finishLoading();
-            this.$message.success("保存成功")
-          })
-          .error(() => {
-            this.$message.error("保存失败")
-          });
-      /*)
-    } else {
-      this.$message.error("请输入正确的信息");
+      this.$refs["infoForm"].validate(valid => {
+        if (valid) {
+          this.$showLoading("正在保存")
+          this.$store.dispatch("SaveEdit", this.user)
+            .then(() => {
+              setTimeout(() => {
+                this.$finishLoading();
+                this.$message.success("保存成功！");
+                this.$router.push({
+                  path: "/user"
+                });
+              }, 800)
+            })
+            .catch((error) => {
+              this.$finishLoading();
+              this.$message.error("保存失败")
+              this.$router.push({
+                path: "/user"
+              });
+            });
+
+        } else {
+          this.$message.error("请输入正确的信息");
+        }
+      })
     }
-  });*/
-    },
   },
-  beforeMount() {
-    this.user = JSON.parse(this.$store.getters.getUser)
+  created () {
+    const user = JSON.parse(localStorage.getItem('user'));
+    this.user = { phone: user.phone, email: user.email, bank_number: user.bank_number }
   },
 }
 </script>
 
 <style scoped>
+.el-icon {
+  margin-right: 10px;
+  margin-bottom: 5px;
+}
 .content {
   margin-left: 18%;
   margin-right: 18%;
