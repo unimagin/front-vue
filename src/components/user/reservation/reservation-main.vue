@@ -1,0 +1,53 @@
+<template>
+  <div>
+    <el-container class="content">
+      <el-aside
+          width="200px"
+          style="background-color: #ecf5ff; margin-right: 120px"
+      >
+        <el-menu router="true">
+          <el-menu-item class="list" index="1" route="/user/reservation/park-situation"
+          >车辆情况
+          </el-menu-item
+          >
+          <el-menu-item class="list" index="2" route="/user/reservation/reservation-situation">预约情况</el-menu-item>
+        </el-menu>
+      </el-aside>
+      <el-main style="height: 100%">
+        <router-view></router-view>
+      </el-main>
+    </el-container>
+  </div>
+</template>
+
+<script>
+
+export default {
+  name: "reservation",
+}
+</script>
+
+<style scoped>
+.el-main {
+  width: 600px;
+  height: 400px;
+  margin-top: 40px;
+}
+
+.content {
+  margin-left: 18%;
+  margin-right: 18%;
+  margin-top: 80px;
+}
+
+.list {
+  padding: 0 !important;
+  background-color: #ecf5ff;
+  text-align: center;
+  font-size: medium !important;
+}
+
+.el-menu {
+  --el-menu-hover-background-color: #c6e2ff !important;
+}
+</style>
