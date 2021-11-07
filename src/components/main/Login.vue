@@ -119,7 +119,7 @@ export default {
       });
     }
   },
-  beforeMount() {
+  created() {
     if (localStorage.getItem("autoLogin")) {
       this.checkList.push("自动登录");
     }
@@ -129,14 +129,14 @@ export default {
       } else {
         this.checkList.push("记住密码");
       }
-      this.user = JSON.parse(this.$store.getters.getUser)
+      this.user = JSON.parse(localStorage.getItem('user'))
     }
   },
   mounted() {
     if (localStorage.getItem("autoLogin")) {
       setTimeout(() => {
         this.doLogin()
-      }, 1000)
+      }, 800)
     }
   }
 };
@@ -193,7 +193,6 @@ export default {
 }
 
 
-
 .el-form-item:nth-child(2) {
   /* background-color: yellow;  */
   margin-bottom: -20px;
@@ -238,18 +237,21 @@ export default {
 
 :deep(.el-form-item__error) {
   /* background-color: cadetblue;  */
- right: 13px;
- font-size: 14px;
+  right: 13px;
+  font-size: 14px;
   margin-top: -22px;
   margin-bottom: auto;
 }
-:deep(.el-input__suffix){
+
+:deep(.el-input__suffix) {
   right: 15px;
 }
-:deep(.el-checkbox__label){
+
+:deep(.el-checkbox__label) {
   color: #444;
   font-size: 15px;
 }
+
 .find {
 
   margin-left: 18%;
@@ -272,10 +274,12 @@ a {
 a:hover {
   color: white;
 }
-:deep(.el-form-item__label){
+
+:deep(.el-form-item__label) {
   color: black;
   font-size: 16px;
 }
+
 .el-button {
   width: 80%;
   margin-left: -20%;
