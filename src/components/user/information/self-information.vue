@@ -10,11 +10,17 @@
             </el-icon>
             基本信息
           </el-menu-item>
-          <el-menu-item class="list" index="2" route="/user/self-information/reservation-information">
+          <el-menu-item class="list" index="2" route="reservation-information">
             <el-icon :size="20">
               <document/>
             </el-icon>
             预约记录
+          </el-menu-item>
+          <el-menu-item class="list" index="3" route="car">
+            <el-icon :size="20">
+              <document/>
+            </el-icon>
+            车辆管理
           </el-menu-item>
         </el-menu>
       </el-aside>

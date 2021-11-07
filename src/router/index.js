@@ -11,6 +11,7 @@ import ParkingSituation from "../components/user/reservation/park-situation.vue"
 import ReservationSituation from "../components/user/reservation/reservation-situation.vue"
 import ReservationInformation from "../components/user/information/reservation-information.vue"
 import BasicInformation from "../components/user/information/basic-information.vue"
+import CarManage from "../components/user/information/car-manage.vue"
 
 import store from "../store";
 
@@ -58,7 +59,11 @@ const routes = [
                     {
                         path: 'reservation-information',
                         component: ReservationInformation,
-                    }
+                    },
+                    {
+                        path: 'car',
+                        component: CarManage,
+                    },
                 ]
             },
             {
