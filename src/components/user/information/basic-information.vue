@@ -77,13 +77,11 @@ export default {
           this.$showLoading("正在保存")
           this.$store.dispatch("SaveEdit", this.user)
               .then(() => {
-                setTimeout(() => {
-                  this.$finishLoading();
-                  this.$message.success("保存成功！");
-                  this.$router.push({
-                    path: "/user"
-                  });
-                }, 800)
+                this.$finishLoading();
+                this.$message.success("保存成功！");
+                this.$router.push({
+                  path: "/user"
+                });
               })
               .catch((error) => {
                 this.$finishLoading();

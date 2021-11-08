@@ -12,6 +12,7 @@ import ReservationSituation from "../components/user/reservation/reservation-sit
 import ReservationInformation from "../components/user/information/reservation-information.vue"
 import BasicInformation from "../components/user/information/basic-information.vue"
 import CarManage from "../components/user/information/car-manage.vue"
+import Rates from "../components/user/reservation/rates.vue"
 
 import store from "../store";
 
@@ -78,6 +79,10 @@ const routes = [
                     {
                         path: 'reservation-situation',
                         component: ReservationSituation
+                    },
+                    {
+                        path: "rates",
+                        component: Rates
                     }
                 ]
 

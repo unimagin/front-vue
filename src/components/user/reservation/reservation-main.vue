@@ -6,11 +6,12 @@
           style="background-color: #ecf5ff; margin-right: 120px"
       >
         <el-menu router="true">
-          <el-menu-item class="list" index="1" route="/user/reservation/park-situation"
+          <el-menu-item class="list" index="1" route="park-situation"
           >车辆情况
           </el-menu-item
           >
-          <el-menu-item class="list" index="2" route="/user/reservation/reservation-situation">预约情况</el-menu-item>
+          <el-menu-item class="list" index="2" route="reservation-situation">预约情况</el-menu-item>
+          <el-menu-item class="list" index="3" route="rates">收费标准</el-menu-item>
         </el-menu>
       </el-aside>
       <el-main style="height: 100%">
