@@ -3,6 +3,15 @@ import axios from 'axios'
 // 超时时间
 axios.defaults.timeout = 10000;
 axios.interceptors.request.use(config => {
+    let url = config.url;
+    if (url.startsWith('/user')) {
+        if (localStorage.getItem("token")) {
+            config.headers.Authorization['token'] = localStorage.getItem('token');
+        }
+        else{
+            throw new Error("请先登录");
+        }
+    }
     return config;
 }, error => {
     setTimeout(() => {

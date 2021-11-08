@@ -1,4 +1,4 @@
-import { createStore } from 'vuex'
+import {createStore} from 'vuex'
 import axios from 'axios';
 
 
@@ -12,20 +12,20 @@ const store = createStore({
              state.user = localStorage.getItem('user');
              state.token = localStorage.getItem('token');
          },*/
-        auth_success (state, { token, user }) {
+        auth_success(state, {token, user}) {
             state.token = token;
             state.user = user;
         },
-        selfEdit (state, user) {
+        selfEdit(state, user) {
             state.user = user;
         },
-        logout (state) {
+        logout(state) {
             state.token = '';
             state.user = {};
         },
     },
     actions: {
-        Login ({ commit }, { params, checkList }) {
+        Login({commit}, {params, checkList}) {
             return new Promise((resolve, reject) => {
                 console.log(params);
                 // 向后端发送请求，验证用户名密码是否正确，请求成功接收后端返回的token值，利用commit修改store的state属性，并将token存放在localStorage中
@@ -41,7 +41,7 @@ const store = createStore({
                                 localStorage.setItem("autoLogin", "true");
                             }
                         }
-                        localStorage.setItem('token', JSON.stringify(token))
+                        localStorage.setItem('token', token.toString())
                         localStorage.setItem('user', JSON.stringify(user))
                         // 更新token
                         commit('auth_success', {
@@ -56,7 +56,7 @@ const store = createStore({
                     })
             })
         },
-        SaveEdit ({ commit }, user) {
+        SaveEdit({commit}, user) {
             return new Promise((resolve, reject) => {
                 // 向后端发送请求，验证用户名密码是否正确，请求成功接收后端返回的token值，利用commit修改store的state属性，并将token存放在localStorage中
                 axios.post('/api/user/edit', user)
@@ -73,7 +73,7 @@ const store = createStore({
                     })
             })
         },
-        LogOut ({ commit }) {
+        LogOut({commit}) {
             return new Promise((resolve, reject) => {
                 commit('logout');
                 localStorage.clear()

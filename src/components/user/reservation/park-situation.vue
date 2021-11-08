@@ -46,46 +46,106 @@
           <div class="row" direction="vertical">
             <template v-for="col in cols">
               <div class="col" direction="horizontal">
-                <el-popover
-                    placement="top-start"
-                    :width="200"
-                    trigger="hover"
-                >
-                  <p>是否预约此位置</p>
-                  <div style="text-align: right; margin: 0">
-                    <el-button size="mini" type="text">取消</el-button>
-                    <el-button type="primary" size="mini" @click="goReservation"
-                    >确定
-                    </el-button>
-                  </div>
-                  <template
-                      v-if="parks[(row - 1) * cols + col].status == 1"
-                      #reference
+                <template
+                    v-if="parks[(row - 1) * cols + col].status == 1">
+                  <el-popover
+                      placement="top-start"
+                      :width="200"
+                      trigger="hover"
                   >
-                    <el-button plain type="ok">{{ parks[(row - 1) * cols + col].parking_number }}</el-button>
-                  </template>
-                  <template
-                      v-else-if="parks[(row - 1) * cols + col].status == 2"
-                      #reference
+                    <p>是否预约此位置</p>
+                    <div style="text-align: right; margin: 0">
+                      <el-button size="mini" type="text">取消</el-button>
+                      <el-button type="primary" size="mini"
+                                 @click="goConfirm(parks[(row - 1) * cols + col].parking_number)"
+                      >确定
+                      </el-button>
+                    </div>
+                    <template
+                        #reference>
+                      <el-button plain type="ok">{{ parks[(row - 1) * cols + col].parking_number }}</el-button>
+                    </template>
+                  </el-popover>
+                </template>
+                <template
+                    v-else-if="parks[(row - 1) * cols + col].status == 2">
+                  <el-popover
+                      placement="top-start"
+                      :width="200"
+                      trigger="hover"
                   >
-                    <el-button plain type="half-busy" disable
-                    >{{ parks[(row - 1) * cols + col].parking_number }}
-                    </el-button
-                    >
-                  </template>
-                  <template v-else #reference>
-                    <el-button plain type="busy" disable>{{
-                        parks[(row - 1) * cols + col].parking_number
-                      }}
-                    </el-button>
-                  </template>
-                </el-popover>
+                    <p>此车位半忙状态，不能预约</p>
+                    <template #reference>
+                      <el-button plain type="half-busy" disable
+                      >{{ parks[(row - 1) * cols + col].parking_number }}
+                      </el-button>
+                    </template>
+                  </el-popover>
+                </template>
+                <template v-else>
+                  <el-popover
+                      placement="top-start"
+                      :width="200"
+                      trigger="hover"
+                  >
+                    <p>此车位忙已经被预约</p>
+                    <template #reference>
+                      <el-button plain type="busy" disable>{{
+                          parks[(row - 1) * cols + col].parking_number
+                        }}
+                      </el-button>
+                    </template>
+                  </el-popover>
+                </template>
               </div>
             </template>
           </div>
         </template>
       </template>
     </el-row>
+
+    <el-dialog v-model="centerDialogVisible" title="预约" width="30%" center>
+      <el-form ref="form" label-width="120px">
+        <el-form-item label="车位">
+          <el-input v-model="choose_park_number" readonly></el-input>
+        </el-form-item>
+        <el-form-item label="车辆选择">
+          <el-select v-model="car" aria-valuenow="京B8888" placeholder="please select your zone">
+            <el-option label="京B8888" value="京B8888"></el-option>
+            <el-option label="上A1111" value="上A1111"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="预约时间">
+          <el-time-select
+              v-model="begin_time"
+              placeholder="Start time"
+              disabled
+              start="07:00"
+              step="00:15"
+              end="22:30"
+          >
+          </el-time-select>
+          <el-time-select
+              v-model="end_time"
+              :min-time="begin_time"
+              placeholder="End time"
+              disabled
+              start="07:00"
+              step="00:15"
+              end="22:30"
+          >
+          </el-time-select>
+        </el-form-item>
+      </el-form>
+      <template #footer>
+      <span class="dialog-footer">
+        <el-button @click="centerDialogVisible = false">取消</el-button>
+        <el-button type="primary" @click="goReservation"
+        >确认</el-button
+        >
+      </span>
+      </template>
+    </el-dialog>
   </div>
 </template>
 
@@ -103,16 +163,14 @@ export default {
     return {
       rows: 5,
       cols: 5,
-      status_content: {
-        "1": "可以预约",
-        "2": "部分占满",
-        "3": "已占满"
-      },
       floor_level: 1,
       begin_time: "07:00",
       end_time: "07:15",
       parks: [],
       finished: false,
+      centerDialogVisible: false,
+      choose_park_number: 0,
+      car: "京B88888"
     }
   },
   methods: {
@@ -124,8 +182,35 @@ export default {
         this.axios_search();
       }
     },
-    goReservation() {
-      this.$message.success("预约成功")
+    goConfirm(park_number) {
+      if (this.begin_time == "" || this.end_time == "") {
+        this.$message.error("请输入时间")
+      } else {
+        this.choose_park_number = park_number;
+        this.centerDialogVisible = true;
+      }
+    },
+    async goReservation() {
+      this.centerDialogVisible = false
+      const user = JSON.parse(localStorage.getItem("user"));
+      this.$showLoading("正在预约");
+      console.log(this.car);
+      console.log(this.choose_park_number)
+      const res = await
+          axios.post("/api/user/appoint", {
+            user: user,
+            car: this.car,
+            park_number: this.choose_park_number,
+            begin_time: this.begin_time,
+            end_time: this.end_time
+          })
+      this.$finishLoading();
+      console.log(res)
+      if (res) {
+        this.$message.success("预约成功")
+      } else {
+        this.$message.error("预约失败")
+      }
     },
     async axios_search() {
       const res = await axios

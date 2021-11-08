@@ -8,22 +8,24 @@
     "
       style="width: 100%"
   >
-    <el-table-column type="index" />
-    <el-table-column label="车牌号" prop="car_number" />
-    <el-table-column label="备注" prop="remark" />
+    <el-table-column type="index"/>
+    <el-table-column label="车牌号" prop="car_number"/>
+    <el-table-column label="备注" prop="remark"/>
     <el-table-column align="right">
       <template #header>
-        <el-input v-model="search" size="mini" placeholder="Type to search" />
+        <el-input v-model="search" size="mini" placeholder="Type to search"/>
       </template>
       <template #default="scope">
         <el-button size="mini" @click="handleEdit(scope.$index, scope.row)"
-        >Edit</el-button
+        >Edit
+        </el-button
         >
         <el-button
             size="mini"
             type="danger"
             @click="handleDelete(scope.$index, scope.row)"
-        >Delete</el-button
+        >Delete
+        </el-button
         >
       </template>
     </el-table-column>
@@ -31,6 +33,8 @@
 </template>
 
 <script lang="ts">
+import axios from "axios";
+
 export default {
   data() {
     return {
@@ -53,6 +57,7 @@ export default {
         },
       ],
       search: '',
+      isFinish: false,
     }
   },
   methods: {
@@ -63,5 +68,16 @@ export default {
       console.log(index, row)
     },
   },
+  created() {
+   /* this.$showLoading("正在拼命加载");
+    const user = JSON.parse(this.$store.state.user);
+    axios.post("/api/user/look_cars", {
+      user: user,
+    }).then(() => {
+          this.isFinish = true;
+          this.$finishLoading()l
+        }
+    )*/
+  }
 }
 </script>
