@@ -46,57 +46,26 @@
           <div class="row" direction="vertical">
             <template v-for="col in cols">
               <div class="col" direction="horizontal">
-                <template
-                    v-if="parks[(row - 1) * cols + col].status == 1">
-                  <el-popover
-                      placement="top-start"
-                      :width="200"
-                      trigger="hover"
-                  >
-                    <p>是否预约此位置</p>
-                    <div style="text-align: right; margin: 0">
-                      <el-button size="mini" type="text">取消</el-button>
-                      <el-button type="primary" size="mini"
-                                 @click="goConfirm(parks[(row - 1) * cols + col].parking_number)"
-                      >确定
-                      </el-button>
-                    </div>
-                    <template
-                        #reference>
-                      <el-button plain type="ok">{{ parks[(row - 1) * cols + col].parking_number }}</el-button>
-                    </template>
-                  </el-popover>
-                </template>
-                <template
-                    v-else-if="parks[(row - 1) * cols + col].status == 2">
-                  <el-popover
-                      placement="top-start"
-                      :width="200"
-                      trigger="hover"
-                  >
-                    <p>此车位半忙状态，不能预约</p>
-                    <template #reference>
-                      <el-button plain type="half-busy" disable
-                      >{{ parks[(row - 1) * cols + col].parking_number }}
-                      </el-button>
-                    </template>
-                  </el-popover>
-                </template>
-                <template v-else>
-                  <el-popover
-                      placement="top-start"
-                      :width="200"
-                      trigger="hover"
-                  >
-                    <p>此车位忙已经被预约</p>
-                    <template #reference>
-                      <el-button plain type="busy" disable>{{
-                          parks[(row - 1) * cols + col].parking_number
-                        }}
-                      </el-button>
-                    </template>
-                  </el-popover>
-                </template>
+                <el-popover
+                    placement="top-start"
+                    :width="200"
+                    trigger="hover"
+                >
+                  <p>是否预约此位置</p>
+                  <div style="text-align: right; margin: 0">
+                    <el-button size="mini" type="text">取消</el-button>
+                    <el-button type="primary" size="mini"
+                               @click="goConfirm(parks[(row - 1) * cols + col].parking_number)"
+                    >确定
+                    </el-button>
+                  </div>
+                  <template
+                      #reference>
+                    <el-button :type="parks[(row - 1) * cols + col].status" class="choose_button">
+                      {{ parks[(row - 1) * cols + col].parking_number }}
+                    </el-button>
+                  </template>
+                </el-popover>
               </div>
             </template>
           </div>
@@ -252,16 +221,18 @@ export default {
   height: 100%;
 }
 
-.el-button--ok {
-  background-color: #0dda10;
+.choose_button {
+  border-radius: 50%;
+  padding: 20px 20px;
 }
-
-.el-button--half-busy {
-  background-color: #eacc09;
+.el-button--1{
+  background-color: #4caf50;
 }
-
-.el-button--busy {
-  background-color: #ea2309;
+.el-button--2{
+  background-color: #ffcdd2;
+}
+.el-button--3{
+  background-color: #e53935;
 }
 
 .content {
