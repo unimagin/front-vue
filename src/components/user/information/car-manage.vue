@@ -30,7 +30,7 @@
       </template>
     </el-table-column>
   </el-table>
-  <el-button type="primary" @click=" centerDialogVisible=true ">添加</el-button>
+  <el-button class="insert" type="primary" @click=" centerDialogVisible=true ">添加车辆</el-button>
   <el-dialog v-model="centerDialogVisible" title="预约" width="30%" center>
     <el-form ref="form" label-width="120px">
       <el-form-item label="车牌号">
@@ -119,3 +119,17 @@ export default {
   }
 }
 </script>
+<style scoped>
+:deep(.el-button--primar){
+  --el-button-background-color:#ecf5ff;
+}
+.insert{
+  background:#ecf5ff;
+  border-color: #ecf5ff;
+  color: black;
+  margin-top: 50px;
+}
+/* :deep(.el-button){
+      background:#ecf5ff;
+} */
+</style>
