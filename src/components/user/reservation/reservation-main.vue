@@ -1,17 +1,19 @@
 <template>
   <div>
     <el-container class="content">
-      <el-aside
-          width="200px"
-          style="background-color: #ecf5ff; margin-right: 120px"
-      >
-        <el-menu router="true">
-          <el-menu-item class="list" index="1" route="park-situation"
-          >车辆情况
-          </el-menu-item
+      <el-aside width="200px" style="margin-right: 120px">
+        <el-menu :default-active="$route.path" router="true">
+          <el-menu-item class="list" index="/user/reservation/park-situation"
+            >车辆情况
+          </el-menu-item>
+          <el-menu-item
+            class="list"
+            index="/user/reservation/reservation-situation"
+            >预约情况</el-menu-item
           >
-          <el-menu-item class="list" index="2" route="reservation-situation">预约情况</el-menu-item>
-          <el-menu-item class="list" index="3" route="rates">收费标准</el-menu-item>
+          <el-menu-item class="list" index="/user/reservation/rates"
+            >收费标准</el-menu-item
+          >
         </el-menu>
       </el-aside>
       <el-main style="height: 100%">
@@ -29,11 +31,11 @@ export default {
 </script>
 
 <style scoped>
-.el-main {
+/*.el-main {
   width: 600px;
-  height: 400px;
+   height: 400px;
   margin-top: 40px;
-}
+}*/
 
 .content {
   margin-left: 18%;

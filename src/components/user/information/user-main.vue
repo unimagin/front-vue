@@ -8,18 +8,18 @@
           mode="horizontal"
           text-color="#53a8ff"
           active-text-color="#409eff"
+          :default-active="$route.path"
         >
           <el-menu-item
             class="nav"
-            index="1"
-            route="/user/reservation"
+            index="/user/reservation"
             style="margin-left: 150px"
             >主&nbsp;页</el-menu-item
           >
           <el-menu-item
             class="nav"
             style="margin-left: auto"
-            route="/user/self-information"
+            index="/user/self-information"
           >
             <el-icon size="20px">
               <user-filled />

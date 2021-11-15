@@ -3,22 +3,25 @@
     <el-container class="content">
       <el-aside width="200px" style="margin-right: 120px">
         <el-row class="title"> 个人中心</el-row>
-        <el-menu router="true">
-          <el-menu-item class="list" index="1" route="/user/self-information">
+        <el-menu :default-active="$route.path" router="true">
+          <el-menu-item class="list" index="/user/self-information/basic">
             <el-icon :size="20">
-              <user/>
+              <user />
             </el-icon>
             基本信息
           </el-menu-item>
-          <el-menu-item class="list" index="2" route="reservation-information">
+          <el-menu-item
+            class="list"
+            index="/user/self-information/reservation-information"
+          >
             <el-icon :size="20">
-              <document/>
+              <document />
             </el-icon>
             预约记录
           </el-menu-item>
-          <el-menu-item class="list" index="3" route="car">
+          <el-menu-item class="list" index="/user/self-information/car">
             <el-icon :size="20">
-              <document/>
+              <document />
             </el-icon>
             车辆管理
           </el-menu-item>
@@ -32,7 +35,7 @@
 </template>
 
 <script>
-import {Document, User} from "@element-plus/icons";
+import { Document, User } from "@element-plus/icons";
 
 export default {
   components: {
