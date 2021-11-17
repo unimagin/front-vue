@@ -10,17 +10,22 @@
         <el-input v-model="user.phone" readonly></el-input>
       </el-form-item>
       <el-form-item label="电子邮箱：" prop="email">
-        <el-input v-model="user.email"></el-input>
+        <el-input v-model="user.email" :readonly="isSaved"></el-input>
       </el-form-item>
       <el-form-item
           label="银行卡号："
           prop="bank_number"
           style="margin-bottom: 40px"
       >
-        <el-input v-model="user.bank_number" prop="bank_number"></el-input>
+        <el-input v-model="user.bank_number" prop="bank_number" :readonly="isSaved"></el-input>
       </el-form-item>
       <el-form-item style="margin-left: 120px">
-        <el-button type="primary" @click="saveEdit">保存</el-button>
+        <template v-if="isSaved">
+          <el-button type="primary" @click="isSaved = false">修改</el-button>
+        </template>
+        <template v-else>
+          <el-button type="primary" @click="saveEdit">保存</el-button>
+        </template>
       </el-form-item>
     </el-form>
   </div>
@@ -43,6 +48,7 @@ export default {
       }
     }
     return {
+      isSaved: true,
       user: {
         phone: "123",
         email: "123",
@@ -79,16 +85,14 @@ export default {
               .then(() => {
                 this.$finishLoading();
                 this.$message.success("保存成功！");
-                this.$router.push({
-                  path: "/user"
-                });
+                this.isSaved = true
               })
               .catch((error) => {
                 this.$finishLoading();
                 this.$message.error("保存失败")
-                this.$router.push({
+                /*this.$router.push({
                   path: "/user"
-                });
+                });*/
               });
 
         } else {
@@ -97,7 +101,7 @@ export default {
       })
     }
   },
-  created() {
+  beforeMount() {
     const user = JSON.parse(localStorage.getItem('user'));
     this.user = {phone: user.phone, email: user.email, bank_number: user.bank_number}
   },

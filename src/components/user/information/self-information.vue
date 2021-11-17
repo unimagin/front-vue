@@ -6,22 +6,22 @@
         <el-menu :default-active="$route.path" router="true">
           <el-menu-item class="list" index="/user/self-information/basic">
             <el-icon :size="20">
-              <user />
+              <user/>
             </el-icon>
             基本信息
           </el-menu-item>
           <el-menu-item
-            class="list"
-            index="/user/self-information/reservation-information"
+              class="list"
+              index="/user/self-information/reservation-information"
           >
             <el-icon :size="20">
-              <document />
+              <document/>
             </el-icon>
             预约记录
           </el-menu-item>
           <el-menu-item class="list" index="/user/self-information/car">
             <el-icon :size="20">
-              <document />
+              <van/>
             </el-icon>
             车辆管理
           </el-menu-item>
@@ -35,12 +35,13 @@
 </template>
 
 <script>
-import { Document, User } from "@element-plus/icons";
+import {Document, User,Van} from "@element-plus/icons";
 
 export default {
   components: {
     Document,
-    User
+    User,
+    Van
   }
 }
 </script>
