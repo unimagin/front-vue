@@ -139,7 +139,7 @@ export default {
   },
   created() {
     this.$showLoading("正在拼命加载");
-    const user = JSON.parse(this.$store.state.user);
+    const user = this.$store.state.user;
     axios.post("/api/user/look_cars", {
       user: user,
     }).then((res) => {

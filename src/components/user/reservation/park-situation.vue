@@ -40,6 +40,7 @@
         <el-button type="primary" round @click="search">查询</el-button>
       </el-col>
     </el-row>
+
     <el-row style="margin-left: 50px">
       <template v-if="finished">
         <template v-for="row in rows">
@@ -79,9 +80,10 @@
           <el-input v-model="choose_park_number" readonly></el-input>
         </el-form-item>
         <el-form-item label="车辆选择">
-          <el-select v-model="car" aria-valuenow="京B8888" placeholder="请选择你的车辆">
-            <el-option label="京B8888" value="京B8888"></el-option>
-            <el-option label="上A1111" value="上A1111"></el-option>
+          <el-select v-model="car" placeholder="请选择你的车辆">
+            <template v-for="item in owner_cars">
+              <el-option :label="item.car_number" :value="item.car_number"></el-option>
+            </template>
           </el-select>
         </el-form-item>
         <el-form-item label="预约时间">
@@ -127,6 +129,14 @@ export default {
   created() {
     this.$showLoading("正在拼命加载");
     this.axios_search();
+    const user = this.$store.state.user;
+    axios.post("/api/user/look_cars", {
+      user: user,
+    }).then((res) => {
+          this.owner_cars = res.data;
+          this.$finishLoading();
+        }
+    )
   },
   data() {
     return {
@@ -139,7 +149,8 @@ export default {
       finished: false,
       centerDialogVisible: false,
       choose_park_number: 0,
-      car: "京B88888"
+      car: "",
+      owner_cars: []
     }
   },
   methods: {
@@ -159,27 +170,32 @@ export default {
         this.centerDialogVisible = true;
       }
     },
-    async goReservation() {
+    goReservation() {
+      if (this.car == "") {
+        this.$message.error("请输入预约车辆")
+        return;
+      }
       this.centerDialogVisible = false
       const user = this.$store.state.user;
       this.$showLoading("正在预约");
-      console.log(this.car_number);
-      console.log(this.choose_park_number)
-      const res = await
-          axios.post("/api/user/appoint", {
-            user: user,
-            car_number: this.car,
-            park_number: this.choose_park_number,
-            begin_time: this.begin_time,
-            end_time: this.end_time
-          })
-      this.$finishLoading();
-      console.log(res)
-      if (res) {
+      var myDate = new Date();
+      var month = myDate.getFullYear().toString() + "-" + myDate.getMonth().toString() + "-";
+      var date = (myDate.getDate() + 1).toString() + "T";
+      console.log(month + date + this.begin_time + ":00")
+      console.log(date);
+      axios.post("/api/user/appoint", {
+        user: user,
+        car_number: this.car,
+        parking_number: this.choose_park_number,
+        begin_time: month + date + this.begin_time + ":00",
+        end_time: month + date + this.end_time + ":00"
+      }).then(() => {
+        this.$finishLoading();
         this.$message.success("预约成功")
-      } else {
-        this.$message.error("预约失败")
-      }
+      }).catch(() => {
+        this.$finishLoading();
+        this.$message.success("预约失败")
+      })
     },
     async axios_search() {
       const res = await axios
@@ -191,8 +207,8 @@ export default {
       this.parks = res.data
       this.$finishLoading();
       this.finished = true;
-    }
-  }
+    },
+  },
 }
 </script>
 
