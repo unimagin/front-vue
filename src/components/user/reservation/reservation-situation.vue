@@ -10,7 +10,9 @@
       <template v-slot="scope">
         <p>{{ scope.row.used ? "正在使用" : "未到达" }}</p>
         <p>{{ scope.row.used ? "到达时间：" : "" }}</p>
-        <p>{{ scope.row.used ? scope.row.arrive_time : "" }}</p>
+        <p>
+          {{ scope.row.used ? time(scope.row) : "" }}
+        </p>
       </template>
     </el-table-column>
     <el-table-column label="操作" width="300">
@@ -123,6 +125,11 @@ export default {
     date(row) {
       return row.begin_time.split("T")[0];
     },
+    time(row) {
+      if (row.arrive_time != null)
+        return new Date(row.arrive_time).toString().split(" ")[4];
+      return "";
+    },
     cancelReservation(row) {
       if (row.used == 0) {
         ElMessageBox({
@@ -162,14 +169,10 @@ export default {
       const r_state = localStorage.getItem("r_state");
       if (row.used == 0 && parseInt(r_state) == -1) {
         this.tableData[index].used = 1;
-        const now = new Date();
-        const h = now.getHours();
-        const m = now.getMinutes();
-        const s = now.getSeconds();
         localStorage.setItem("r_state", index + "");
-        this.tableData[index].arrive_time = h + ":" + m + ":" + s;
+        this.tableData[index].arrive_time = new Date();
         axios
-          .post("/api/reservation/change_used", { row, now })
+          .post("/api/reservation/change_used", row)
           .then((resp) => {
             console.log(resp);
           })
@@ -213,16 +216,6 @@ export default {
       .post("./api/user/look_reservation", user)
       .then((resp) => {
         this.tableData = resp.data.reservations;
-        for (var i = 0; i < this.tableData.length; i++) {
-          this.tableData[i].save = true;
-          if (this.tableData[i].arrive_time != null) {
-            const now = new Date(this.tableData[i].arrive_time);
-            const h = now.getHours();
-            const m = now.getMinutes();
-            const s = now.getSeconds();
-            this.tableData[i].arrive_time = h + ":" + m + ":" + s;
-          }
-        }
         console.log(this.tableData);
       })
       .catch((err) => {
