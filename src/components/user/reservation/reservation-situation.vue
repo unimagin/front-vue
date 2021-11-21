@@ -19,7 +19,7 @@
       <template v-slot="scope">
         <el-row :gutter="10">
           <el-col :span="6"
-            ><el-button size="mini" @click="centerDialogVisible = true"
+            ><el-button size="mini" @click="editReservation(scope.$index)"
               >编辑
             </el-button>
           </el-col>
@@ -51,7 +51,7 @@
   <el-dialog v-model="centerDialogVisible" title="预约" width="30%" center>
     <el-form ref="form" :model="form" label-width="120px">
       <el-form-item label="车位">
-        <el-input v-model="form.park" readonly></el-input>
+        <el-input v-model="form.parking_number" readonly></el-input>
       </el-form-item>
       <el-form-item label="车牌号">
         <el-input v-model="form.car_number" :readonly="form.saved"></el-input>
@@ -79,14 +79,6 @@
           </el-time-select>
         </div>
       </el-form-item>
-      <el-form-item label="是否付费">
-        <el-switch
-          v-model="form.isPaid"
-          active-color="#13ce66"
-          inactive-color="#ff4949"
-          disabled
-        ></el-switch>
-      </el-form-item>
       <template v-if="form.saved">
         <el-form-item>
           <el-button type="primary" @click="form.saved = false">修改</el-button>
@@ -94,7 +86,7 @@
       </template>
       <template v-else>
         <el-form-item>
-          <el-button type="primary" @click="form.saved = true">保存</el-button>
+          <el-button type="primary" @click="saveReservation">保存</el-button>
         </el-form-item>
       </template>
     </el-form>
@@ -108,16 +100,8 @@ export default {
   data() {
     return {
       tableData: [],
-      form: {
-        reservation_ID: "4",
-        park: "111",
-        car_number: "京A 8888",
-        begin_time: "07:30",
-        end_time: "08:00",
-        arrive_time: "",
-        saved: true,
-        used: 0,
-      },
+      form: {},
+      form_index: -1,
       centerDialogVisible: false,
     };
   },
@@ -129,6 +113,41 @@ export default {
       if (row.arrive_time != null)
         return new Date(row.arrive_time).toString().split(" ")[4];
       return "";
+    },
+    editReservation(index) {
+      this.centerDialogVisible = true;
+      this.form_index = index;
+      this.form = JSON.parse(JSON.stringify(this.tableData[index]));
+      const begin = this.form.begin_time.split("T")[1].split(".")[0];
+      this.form.begin_time = begin.slice(0, begin.lastIndexOf(":"));
+      const end = this.form.end_time.split("T")[1].split(".")[0];
+      this.form.end_time = end.slice(0, end.lastIndexOf(":"));
+      this.form.saved = true;
+      console.log(this.form);
+      console.log(this.tableData[index]);
+    },
+    saveReservation() {
+      console.log(this.tableData[this.form_index]);
+      this.form.saved = true;
+      const t_format = this.tableData[this.form_index].begin_time;
+      console.log(t_format);
+      const prefix = t_format.split("T")[0] + "T";
+      const suffix = "." + t_format.split(".")[1];
+      const begin = prefix + this.form.begin_time + ":00" + suffix;
+      const end = prefix + this.form.end_time + ":00" + suffix;
+      console.log(begin, end);
+      axios
+        .post("/api/reservation/save_reservation", {
+          reservation_ID: this.form.reservation_ID,
+          begin_time: begin,
+          end_time: end,
+        })
+        .then((resp) => {
+          console.log(resp);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
     cancelReservation(row) {
       if (row.used == 0) {
