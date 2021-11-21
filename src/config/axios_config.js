@@ -4,11 +4,10 @@ import axios from 'axios'
 axios.defaults.timeout = 10000;
 axios.interceptors.request.use(config => {
     let url = config.url;
-    if (url.startsWith('/user')) {
+    if (url.startsWith('/api')) {
         if (localStorage.getItem("token")) {
-            config.headers.Authorization['token'] = localStorage.getItem('token');
-        }
-        else{
+            config.headers.Authorization = 'Bearer ' + localStorage.getItem('token');
+        } else {
             throw new Error("请先登录");
         }
     }
