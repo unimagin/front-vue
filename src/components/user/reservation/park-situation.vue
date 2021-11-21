@@ -79,7 +79,7 @@
           <el-input v-model="choose_park_number" readonly></el-input>
         </el-form-item>
         <el-form-item label="车辆选择">
-          <el-select v-model="car" aria-valuenow="京B8888" placeholder="please select your zone">
+          <el-select v-model="car" aria-valuenow="京B8888" placeholder="请选择你的车辆">
             <el-option label="京B8888" value="京B8888"></el-option>
             <el-option label="上A1111" value="上A1111"></el-option>
           </el-select>
@@ -161,14 +161,14 @@ export default {
     },
     async goReservation() {
       this.centerDialogVisible = false
-      const user = JSON.parse(localStorage.getItem("user"));
+      const user = this.$store.state.user;
       this.$showLoading("正在预约");
-      console.log(this.car);
+      console.log(this.car_number);
       console.log(this.choose_park_number)
       const res = await
           axios.post("/api/user/appoint", {
             user: user,
-            car: this.car,
+            car_number: this.car,
             park_number: this.choose_park_number,
             begin_time: this.begin_time,
             end_time: this.end_time
@@ -225,13 +225,16 @@ export default {
   border-radius: 50%;
   padding: 20px 20px;
 }
-.el-button--1{
+
+.el-button--1 {
   background-color: #4caf50;
 }
-.el-button--2{
+
+.el-button--2 {
   background-color: #ffcdd2;
 }
-.el-button--3{
+
+.el-button--3 {
   background-color: #e53935;
 }
 
