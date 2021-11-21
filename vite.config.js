@@ -1,7 +1,7 @@
-import {defineConfig} from "vite";  // 帮手函数，这样不用 jsdoc 注解也可以获取类型提示
+import { defineConfig } from "vite";  // 帮手函数，这样不用 jsdoc 注解也可以获取类型提示
 import vue from '@vitejs/plugin-vue';
 
-const {resolve} = require('path')
+const { resolve } = require('path')
 
 export default defineConfig({
     plugins: [vue()], // 配置需要使用的插件列表，这里将vue添加进去
@@ -27,7 +27,7 @@ export default defineConfig({
         proxy: {
             '/api': {
                 target: 'http://82.156.168.246:8080',   //代理接口
-                // target: 'http://localhost:8080',
+                //target: 'http://localhost:8080',
                 changeOrigin: true,
                 rewrite: (path) => path.replace(/^\/api/, ""),
             }
