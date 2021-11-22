@@ -8,10 +8,6 @@ const store = createStore({
         user: localStorage.getItem('user')
     },
     mutations: {
-        /* flesh(state) {
-             state.user = localStorage.getItem('user');
-             state.token = localStorage.getItem('token');
-         },*/
         auth_success (state, { token, user }) {
             state.token = token;
             state.user = user;
@@ -29,7 +25,7 @@ const store = createStore({
             return new Promise((resolve, reject) => {
                 console.log(params);
                 // 向后端发送请求，验证用户名密码是否正确，请求成功接收后端返回的token值，利用commit修改store的state属性，并将token存放在localStorage中
-                axios.post('/api/user/login', params)
+                axios.post('/api/login', params)
                     .then(resp => {
                         const token = resp.data.token
                         const user = resp.data.user
@@ -47,7 +43,7 @@ const store = createStore({
                         // 更新token
                         commit('auth_success', {
                             token: token,
-                            user: user
+                            user: JSON.stringify(user)
                         })
                         resolve(resp)
                     })

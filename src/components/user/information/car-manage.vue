@@ -89,7 +89,7 @@ export default {
     },
     async handleDelete(index, row) {
       this.$showLoading("正在删除车辆");
-      const user = this.$store.state.user;
+      const user = JSON.parse(localStorage.getItem("user"));
       const res = await axios.post("/api/user/del_cars", {
         car_number: row.car_number,
         user: user
@@ -104,7 +104,7 @@ export default {
       } else {
         this.centerDialogVisible = false;
         this.$showLoading("正在添加");
-        const user = this.$store.state.user;
+        const user = JSON.parse(localStorage.getItem("user"));
         const res = await axios.post("/api/user/add_car", {
           car_number: this.updatedCar.car_number,
           remark: this.updatedCar.remark,
@@ -121,7 +121,7 @@ export default {
     async updateCar() {
       this.isUpdate = false;
       this.$showLoading("正在修改");
-      const user = this.$store.state.user;
+      const user = JSON.parse(localStorage.getItem("user"));
       const res = await axios.post("/api/user/update_car", {
         car_number: this.updatedCar.car_number,
         remark: this.updatedCar.remark,
@@ -139,7 +139,7 @@ export default {
   },
   created() {
     this.$showLoading("正在拼命加载");
-    const user = this.$store.state.user;
+    const user = JSON.parse(localStorage.getItem("user"));
     axios.post("/api/user/look_cars", {
       user: user,
     }).then((res) => {

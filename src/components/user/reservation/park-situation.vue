@@ -129,7 +129,7 @@ export default {
   created() {
     this.$showLoading("正在拼命加载");
     this.axios_search();
-    const user = this.$store.state.user;
+    const user = JSON.parse(localStorage.getItem("user"));
     axios.post("/api/user/look_cars", {
       user: user,
     }).then((res) => {
@@ -176,7 +176,7 @@ export default {
         return;
       }
       this.centerDialogVisible = false
-      const user = this.$store.state.user;
+      const user = JSON.parse(localStorage.getItem("user"));
       this.$showLoading("正在预约");
       var myDate = new Date();
       var month = myDate.getFullYear().toString() + "-" + myDate.getMonth().toString() + "-";
@@ -194,7 +194,7 @@ export default {
         this.$message.success("预约成功")
       }).catch(() => {
         this.$finishLoading();
-        this.$message.success("预约失败")
+        this.$message.error("预约失败")
       })
     },
     async axios_search() {

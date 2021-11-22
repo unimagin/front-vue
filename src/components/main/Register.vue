@@ -120,7 +120,7 @@ export default {
         if (valid) {
           this.$showLoading("正在注册")
           axios
-              .post("/api/user/register", {
+              .post("/api/register", {
                 phone: this.user.phone,
                 email: this.user.email,
                 password: this.user.password,
