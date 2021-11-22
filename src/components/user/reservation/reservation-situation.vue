@@ -137,7 +137,9 @@ export default {
       const end = prefix + this.form.end_time + ":00" + suffix;
       console.log(begin, end);
       axios
-        .post("/api/reservation/save_reservation", {
+        .post("/api/user/appoint", {
+          car_number: this.form.car_number,
+          parking_number: this.form.parking_number,
           reservation_ID: this.form.reservation_ID,
           begin_time: begin,
           end_time: end,
