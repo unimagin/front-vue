@@ -4,7 +4,7 @@ import axios from 'axios'
 axios.defaults.timeout = 10000;
 axios.interceptors.request.use(config => {
     let url = config.url;
-    if (url.startsWith('/api')) {
+    if (url.startsWith('/api/user')) {
         if (localStorage.getItem("token")) {
             config.headers.Authorization = 'Bearer ' + localStorage.getItem('token');
         } else {
