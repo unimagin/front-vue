@@ -188,23 +188,21 @@ export default {
       }
     },
     changeUsed(index, row) {
-      const r_state = localStorage.getItem("r_state");
-      if (row.used == 0 && parseInt(r_state) == -1) {
+      if (row.used == 0) {
         this.tableData[index].used = 1;
-        localStorage.setItem("r_state", index + "");
-        this.tableData[index].arrive_time = new Date();
+        const now = new Date();
+        this.tableData[index].arrive_time = now;
         axios
-          .post("/api/reservation/change_used", row)
+          .post("/api/reservation/change_used", {
+            reservation_ID: row.reservation_ID,
+            arrive_time: now,
+          })
           .then((resp) => {
             console.log(resp);
           })
           .catch((err) => {
             console.log(err);
           });
-      } else if (row.used == 0 && parseInt(r_state) != index) {
-        ElMessageBox.alert("您正在使用一个停车位！", "Warning！", {
-          confirmButtonText: "OK",
-        });
       }
     },
     finishReservation(row) {
@@ -221,7 +219,6 @@ export default {
           .catch((err) => {
             console.log(err);
           });
-        localStorage.setItem("r_state", "-1");
       } else {
         ElMessageBox.alert("您仍未到达不可确认完成预约！", "Warning！", {
           confirmButtonText: "OK",
@@ -235,7 +232,7 @@ export default {
   created() {
     const user = JSON.parse(localStorage.getItem("user"));
     axios
-      .post("./api/user/look_reservation", user)
+      .post("/api/user/look_reservation", user)
       .then((resp) => {
         this.tableData = resp.data.reservations;
         for (var i = 0; i < this.tableData.length; i++) {
@@ -243,6 +240,7 @@ export default {
           this.tableData[i].end_time = new Date(this.tableData[i].end_time);
         }
         console.log(this.tableData);
+        console.log(localStorage);
       })
       .catch((err) => {
         console.log(err);

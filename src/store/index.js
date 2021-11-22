@@ -39,7 +39,6 @@ const store = createStore({
                         }
                         localStorage.setItem('token', token.toString())
                         localStorage.setItem('user', JSON.stringify(user))
-                        localStorage.setItem('r_state', '-1')
                         // 更新token
                         commit('auth_success', {
                             token: token,
