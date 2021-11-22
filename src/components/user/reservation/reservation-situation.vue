@@ -2,9 +2,7 @@
   <el-table :data="tableData" stripe style="width: 100%">
     <el-table-column type="index" />
     <el-table-column label="预约日期" width="180">
-      <template v-slot="scope">
-        {{ date(scope.row) }}
-      </template>
+      {{ date() }}
     </el-table-column>
     <el-table-column label="状态" width="100">
       <template v-slot="scope">
@@ -19,7 +17,9 @@
       <template v-slot="scope">
         <el-row :gutter="10">
           <el-col :span="6"
-            ><el-button size="mini" @click="editReservation(scope.$index)"
+            ><el-button
+              size="mini"
+              @click="editReservation(scope.$index, scope.row)"
               >编辑
             </el-button>
           </el-col>
@@ -106,36 +106,33 @@ export default {
     };
   },
   methods: {
-    date(row) {
-      return row.begin_time.split("T")[0];
+    date() {
+      return new Date().toLocaleDateString();
     },
     time(row) {
       if (row.arrive_time != null)
         return new Date(row.arrive_time).toString().split(" ")[4];
       return "";
     },
-    editReservation(index) {
-      this.centerDialogVisible = true;
-      this.form_index = index;
-      this.form = JSON.parse(JSON.stringify(this.tableData[index]));
-      const begin = this.form.begin_time.split("T")[1].split(".")[0];
-      this.form.begin_time = begin.slice(0, begin.lastIndexOf(":"));
-      const end = this.form.end_time.split("T")[1].split(".")[0];
-      this.form.end_time = end.slice(0, end.lastIndexOf(":"));
-      this.form.saved = true;
-      console.log(this.form);
-      console.log(this.tableData[index]);
+    editReservation(index, row) {
+      if (row.used == 0) {
+        this.centerDialogVisible = true;
+        this.form_index = index;
+        console.log(this.tableData[index]);
+        this.form = JSON.parse(JSON.stringify(this.tableData[index]));
+        const begin = new Date(this.form.begin_time).toString().split(" ")[4];
+        const end = new Date(this.form.end_time).toString().split(" ")[4];
+        this.form.begin_time = begin.substring(0, begin.lastIndexOf(":"));
+        this.form.end_time = end.substring(0, end.lastIndexOf(":"));
+        this.form.saved = true;
+      }
     },
     saveReservation() {
-      console.log(this.tableData[this.form_index]);
       this.form.saved = true;
-      const t_format = this.tableData[this.form_index].begin_time;
-      console.log(t_format);
-      const prefix = t_format.split("T")[0] + "T";
-      const suffix = "." + t_format.split(".")[1];
-      const begin = prefix + this.form.begin_time + ":00" + suffix;
-      const end = prefix + this.form.end_time + ":00" + suffix;
-      console.log(begin, end);
+      let prefix = new Date().toLocaleDateString().replace("/", "-");
+      prefix = prefix.replace("/", "-");
+      const begin = prefix + "T" + this.form.begin_time + ":00";
+      const end = prefix + "T" + this.form.end_time + ":00";
       axios
         .post("/api/user/appoint", {
           car_number: this.form.car_number,
@@ -146,6 +143,10 @@ export default {
         })
         .then((resp) => {
           console.log(resp);
+          ElMessage({
+            type: "success",
+            message: "成功修改预约时间，请刷新页面！",
+          });
         })
         .catch((err) => {
           console.log(err);
@@ -237,6 +238,10 @@ export default {
       .post("./api/user/look_reservation", user)
       .then((resp) => {
         this.tableData = resp.data.reservations;
+        for (var i = 0; i < this.tableData.length; i++) {
+          this.tableData[i].begin_time = new Date(this.tableData[i].begin_time);
+          this.tableData[i].end_time = new Date(this.tableData[i].end_time);
+        }
         console.log(this.tableData);
       })
       .catch((err) => {
