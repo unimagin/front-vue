@@ -193,7 +193,7 @@ export default {
         const now = new Date();
         this.tableData[index].arrive_time = now;
         axios
-          .post("/api/reservation/change_used", {
+          .post("/api/user/reservation/change_used", {
             reservation_ID: row.reservation_ID,
             arrive_time: now,
           })
@@ -208,7 +208,7 @@ export default {
     finishReservation(row) {
       if (row.used == 1) {
         axios
-          .post("/api/bill/generate_bill", row)
+          .post("/api/user/bill/generate_bill", row)
           .then((resp) => {
             console.log(resp);
             ElMessage({
