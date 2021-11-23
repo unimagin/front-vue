@@ -191,6 +191,7 @@ export default {
     },
     finishReservation(row) {
       if (row.used == 1) {
+        console.log(typeof row.begin_time);
         axios
           .post("/api/user/bill/generate_bill", row)
           .then((resp) => {

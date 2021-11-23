@@ -64,7 +64,7 @@ export default {
     pay(row) {
       if (row.isPaid == 0) {
         axios
-          .post("/api/user/bill/pay_bill", row.bill_ID)
+          .post("/api/user/bill/pay_bill", { bill_ID: row.bill_ID })
           .then((resp) => {
             ElMessage({
               type: "success",
