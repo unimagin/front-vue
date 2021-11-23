@@ -23,7 +23,7 @@
     <el-table-column label="费用" prop="money"> </el-table-column>
     <el-table-column label="操作" width="150">
       <template v-slot="scope">
-        <el-button size="primary" round @click="pay(row)">{{
+        <el-button size="primary" round @click="pay(scope.row)">{{
           scope.row.isPaid ? "已支付" : "待支付"
         }}</el-button>
       </template>
@@ -83,6 +83,7 @@ export default {
       .post("/api/user/finished_reservation", user)
       .then((resp) => {
         this.bills = resp.data.bills;
+        console.log(this.bills);
       })
       .catch((err) => {
         console.log(err);
