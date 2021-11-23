@@ -1,7 +1,24 @@
 <template>
   <div>
     <el-container class="content">
-      <el-aside width="200px" style="margin-right: 120px">
+      <!-- <el-breadcrumb separator="/">
+  <el-breadcrumb-item :to="{ path: '/' }"><el-icon :size="20">
+              <user/>
+            </el-icon>基本信息</el-breadcrumb-item>
+  <el-breadcrumb-item><a href="/"><el-icon :size="20">
+              <document/>
+            </el-icon>预约记录</a></el-breadcrumb-item>
+   
+  <el-breadcrumb-item><a href="/"><el-icon :size="20">
+              <van/>
+            </el-icon>车辆管理</a></el-breadcrumb-item>
+ 
+</el-breadcrumb> -->
+
+      <!-- <el-aside width="200px" style="margin-right: 120px"> -->
+
+
+<!-- 
         <el-row class="title"> 个人中心</el-row>
         <el-menu :default-active="$route.path" router="true">
           <el-menu-item class="list" index="/user/self-information/basic">
@@ -25,9 +42,23 @@
             </el-icon>
             车辆管理
           </el-menu-item>
-        </el-menu>
-      </el-aside>
+        </el-menu>-->
+      <!-- </el-aside>  -->
       <el-main style="height: 100%">
+           <el-breadcrumb separator="/">
+  <el-breadcrumb-item :to="{ path: '/' }"><el-icon :size="20">
+              <user/>
+            </el-icon>基本信息</el-breadcrumb-item>
+  <el-breadcrumb-item><a href="/"><el-icon :size="20">
+              <document/>
+            </el-icon>预约记录</a></el-breadcrumb-item>
+   
+  <el-breadcrumb-item><a href="/"><el-icon :size="20">
+              <van/>
+            </el-icon>车辆管理</a></el-breadcrumb-item>
+ 
+</el-breadcrumb>
+
         <router-view></router-view>
       </el-main>
     </el-container>
@@ -79,5 +110,16 @@ export default {
   font-weight: 700;
   justify-content: center;
   border: 1px solid #e1e1e1 !important;
+}
+
+.el-breadcrumb {
+    font-size: 20px;
+    line-height: 9;
+}
+.el-form{
+  
+}
+.el-main{
+  margin-left: 35%;
 }
 </style>
