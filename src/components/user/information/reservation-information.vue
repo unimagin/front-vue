@@ -2,9 +2,22 @@
   <el-table :data="bills" style="width: 100%">
     <el-table-column type="expand">
       <template v-slot="scope">
-        <p>到达时间: {{ date(scope.row.arrive_time) }}</p>
-        <p>离开时间: {{ date(scope.row.leave_time) }}</p>
-        <p>预约情况: {{ showStatus(scope.row.status) }}</p>
+        <el-descriptions
+          title="详细信息"
+          direction="vertical"
+          :column="3"
+          border
+        >
+          <el-descriptions-item label="预约情况" align="center">{{
+            showStatus(scope.row.status)
+          }}</el-descriptions-item>
+          <el-descriptions-item label="到达时间" align="center">{{
+            date(scope.row.arrive_time)
+          }}</el-descriptions-item>
+          <el-descriptions-item label="离开时间 " align="center">{{
+            date(scope.row.leave_time)
+          }}</el-descriptions-item>
+        </el-descriptions>
       </template>
     </el-table-column>
     <el-table-column type="index" />
