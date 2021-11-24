@@ -1,26 +1,29 @@
 <template>
-  <el-table :data="bills" style="width: 100%">
+  <el-table :data="bills" style="width: 100%;margin-left: -80px;margin-top: -10px">
     <el-table-column type="expand">
       <template v-slot="scope">
         <el-descriptions
-          title="详细信息"
-          direction="vertical"
-          :column="3"
-          border
+            title="详细信息"
+            direction="vertical"
+            :column="3"
+            border
         >
           <el-descriptions-item label="预约情况" align="center">{{
-            showStatus(scope.row.status)
-          }}</el-descriptions-item>
+              showStatus(scope.row.status)
+            }}
+          </el-descriptions-item>
           <el-descriptions-item label="到达时间" align="center">{{
-            date(scope.row.arrive_time)
-          }}</el-descriptions-item>
+              date(scope.row.arrive_time)
+            }}
+          </el-descriptions-item>
           <el-descriptions-item label="离开时间 " align="center">{{
-            date(scope.row.leave_time)
-          }}</el-descriptions-item>
+              date(scope.row.leave_time)
+            }}
+          </el-descriptions-item>
         </el-descriptions>
       </template>
     </el-table-column>
-    <el-table-column type="index" />
+    <el-table-column type="index"/>
     <el-table-column label="预约车辆" prop="car_number" width="150">
     </el-table-column>
     <el-table-column label="开始时间" width="100">
@@ -33,15 +36,16 @@
         {{ date(scope.row.end_time) }}
       </template>
     </el-table-column>
-    <el-table-column label="费用" prop="money"> </el-table-column>
+    <el-table-column label="费用" prop="money"></el-table-column>
     <el-table-column label="操作" width="150">
       <template v-slot="scope">
         <el-button
-          size="primary"
-          round
-          @click="pay(scope.row)"
-          v-show="scope.row.status != 2"
-          >{{ scope.row.isPaid ? "已支付" : "待支付" }}</el-button
+            size="primary"
+            round
+            @click="pay(scope.row)"
+            v-show="scope.row.status != 2"
+        >{{ scope.row.isPaid ? "已支付" : "待支付" }}
+        </el-button
         >
       </template>
     </el-table-column>
@@ -49,7 +53,8 @@
 </template>
 <script lang="ts">
 import axios from "axios";
-import { ElMessage } from "element-plus";
+import {ElMessage} from "element-plus";
+
 export default {
   data() {
     return {
@@ -61,7 +66,7 @@ export default {
     date(time) {
       const timestr = new Date(time).toLocaleString().split(" ");
       return (
-        timestr[0] + "\n" + timestr[1].substring(0, timestr[1].lastIndexOf(":"))
+          timestr[0] + "\n" + timestr[1].substring(0, timestr[1].lastIndexOf(":"))
       );
     },
     showStatus(status) {
@@ -82,30 +87,30 @@ export default {
       if (row.isPaid == 0) {
         row.isPaid = 1;
         axios
-          .post("/api/user/bill/pay_bill", { bill_ID: row.bill_ID })
-          .then((resp) => {
-            ElMessage({
-              type: "success",
-              message: "支付成功！",
+            .post("/api/user/bill/pay_bill", {bill_ID: row.bill_ID})
+            .then((resp) => {
+              ElMessage({
+                type: "success",
+                message: "支付成功！",
+              });
+            })
+            .catch((err) => {
+              console.log(err);
             });
-          })
-          .catch((err) => {
-            console.log(err);
-          });
       }
     },
   },
   created() {
     const user = JSON.parse(localStorage.getItem("user"));
     axios
-      .post("/api/user/finished_reservation", user)
-      .then((resp) => {
-        this.bills = resp.data.bills;
-        console.log(this.bills);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+        .post("/api/user/finished_reservation", user)
+        .then((resp) => {
+          this.bills = resp.data.bills;
+          console.log(this.bills);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
   },
 };
 </script>

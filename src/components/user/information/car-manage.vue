@@ -171,7 +171,8 @@ export default {
 }
 
 .main-content {
-  width: 600px;
+  width: 100%;
+  margin-left: -30px;
 }
 
 .insert {

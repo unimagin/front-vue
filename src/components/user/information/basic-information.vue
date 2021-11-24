@@ -1,5 +1,17 @@
 <template>
   <div>
+    <div class="upload">
+      <el-upload
+          class="avatar-uploader"
+          action="https://jsonplaceholder.typicode.com/posts/"
+          :show-file-list="false"
+          :on-success="handleAvatarSuccess"
+          :before-upload="beforeAvatarUpload">
+        <img v-if="imageUrl" :src="imageUrl" class="avatar">
+        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+      </el-upload>
+      <h3>上传头像</h3>
+    </div>
     <el-form
         ref="infoForm"
         label-width="100px"
@@ -19,7 +31,7 @@
       >
         <el-input v-model="user.bank_number" prop="bank_number" :readonly="isSaved"></el-input>
       </el-form-item>
-      <el-form-item style="margin-left: 120px">
+      <el-form-item style="margin-left: -100px">
         <template v-if="isSaved">
           <el-button type="primary" @click="isSaved = false">修改</el-button>
         </template>
@@ -28,17 +40,6 @@
         </template>
       </el-form-item>
     </el-form>
-<h3>上传头像</h3>
-    <el-upload
-  class="avatar-uploader"
-  action="https://jsonplaceholder.typicode.com/posts/"
-  :show-file-list="false"
-  :on-success="handleAvatarSuccess"
-  :before-upload="beforeAvatarUpload">
-  <img v-if="imageUrl" :src="imageUrl" class="avatar">
-  <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-  
-</el-upload>
   </div>
 </template>
 
@@ -120,7 +121,10 @@ export default {
 </script>
 
 <style scoped>
-
+.upload{
+  margin-top: -30px;
+  margin-bottom: 50px;
+}
 
 .list {
   padding: 0 !important;
@@ -136,37 +140,37 @@ export default {
 .el-input {
   width: 300px;
 }
-:deep(.el-form-item__label){
+
+:deep(.el-form-item__label) {
   font-size: 15px;
 }
 
- :deep( .avatar-uploader .el-upload ){
-    border: 2px dashed #d9d9d9;
-    border-radius: 6px;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-    margin-top: 10px;
-    /* background-color: beige; */
-  }
-  /* .el-upload{
-    background-color: beige;
+:deep( .avatar-uploader .el-upload ) {
+  border: 2px dashed #d9d9d9;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  margin-top: 10px;
+  /* background-color: beige; */
+}
 
-  } */
- :deep( .avatar-uploader .el-upload:hover ){
-    border-color: #409EFF;
-  }
-  :deep(.avatar-uploader-icon) {
-    font-size: 28px;
-    color: #8c939d;
-    width: 150px;
-    height: 150px;
-    line-height: 150px;
-    text-align: center;
-  }
- :deep( .avatar) {
-    width: 150px;
-    height: 150px;
-    display: block;
-  }
+:deep( .avatar-uploader .el-upload:hover ) {
+  border-color: #409EFF;
+}
+
+:deep(.avatar-uploader-icon) {
+  font-size: 28px;
+  color: #8c939d;
+  width: 150px;
+  height: 150px;
+  line-height: 150px;
+  text-align: center;
+}
+
+:deep( .avatar) {
+  width: 150px;
+  height: 150px;
+  display: block;
+}
 </style>
