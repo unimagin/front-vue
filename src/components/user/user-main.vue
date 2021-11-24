@@ -28,9 +28,9 @@
               <i class="el-icon-setting"></i>
               <span slot="title">设置</span>
             </el-menu-item>
-            <el-menu-item index="">
+            <el-menu-item index="" @click="loginOut">
               <i class="el-icon-loading"></i>
-              <span slot="title" @click="loginOut">注销</span>
+              <span slot="title">注销</span>
             </el-menu-item>
           </el-menu>
         </el-col>
