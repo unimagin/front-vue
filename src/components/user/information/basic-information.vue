@@ -110,11 +110,6 @@ export default {
 
 <style scoped>
 
-.content {
-  margin-left: 18%;
-  margin-right: 18%;
-  margin-top: 80px;
-}
 
 .list {
   padding: 0 !important;

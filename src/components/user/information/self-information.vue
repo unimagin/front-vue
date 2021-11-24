@@ -1,64 +1,25 @@
 <template>
   <div>
-    <el-container class="content">
-      <!-- <el-breadcrumb separator="/">
-  <el-breadcrumb-item :to="{ path: '/' }"><el-icon :size="20">
-              <user/>
-            </el-icon>基本信息</el-breadcrumb-item>
-  <el-breadcrumb-item><a href="/"><el-icon :size="20">
-              <document/>
-            </el-icon>预约记录</a></el-breadcrumb-item>
-   
-  <el-breadcrumb-item><a href="/"><el-icon :size="20">
-              <van/>
-            </el-icon>车辆管理</a></el-breadcrumb-item>
- 
-</el-breadcrumb> -->
-
-      <!-- <el-aside width="200px" style="margin-right: 120px"> -->
-
-
-<!-- 
-        <el-row class="title"> 个人中心</el-row>
-        <el-menu :default-active="$route.path" router="true">
-          <el-menu-item class="list" index="/user/self-information/basic">
-            <el-icon :size="20">
-              <user/>
-            </el-icon>
+    <el-container>
+      <el-header>
+        <el-breadcrumb class="headers" separator="/">
+          <el-breadcrumb-item :to="{ path: '/user/self-information/basic' }">
+            <i class="el-icon-user"></i>
             基本信息
-          </el-menu-item>
-          <el-menu-item
-              class="list"
-              index="/user/self-information/reservation-information"
-          >
-            <el-icon :size="20">
-              <document/>
-            </el-icon>
+          </el-breadcrumb-item>
+          <el-breadcrumb-item :to="{ path: '/user/self-information/reservation-information' }">
+            <i class="el-icon-document"></i>
             预约记录
-          </el-menu-item>
-          <el-menu-item class="list" index="/user/self-information/car">
-            <el-icon :size="20">
-              <van/>
-            </el-icon>
-            车辆管理
-          </el-menu-item>
-        </el-menu>-->
-      <!-- </el-aside>  -->
-      <el-main style="height: 100%">
-           <el-breadcrumb separator="/">
-  <el-breadcrumb-item :to="{ path: '/' }"><el-icon :size="20">
-              <user/>
-            </el-icon>基本信息</el-breadcrumb-item>
-  <el-breadcrumb-item><a href="/"><el-icon :size="20">
-              <document/>
-            </el-icon>预约记录</a></el-breadcrumb-item>
-   
-  <el-breadcrumb-item><a href="/"><el-icon :size="20">
-              <van/>
-            </el-icon>车辆管理</a></el-breadcrumb-item>
- 
-</el-breadcrumb>
+          </el-breadcrumb-item>
 
+          <el-breadcrumb-item :to="{ path: '/user/self-information/car' }">
+            <i class="el-icon-bicycle"></i>
+            车辆管理
+          </el-breadcrumb-item>
+
+        </el-breadcrumb>
+      </el-header>
+      <el-main class="main">
         <router-view></router-view>
       </el-main>
     </el-container>
@@ -66,14 +27,9 @@
 </template>
 
 <script>
-import {Document, User,Van} from "@element-plus/icons";
 
 export default {
-  components: {
-    Document,
-    User,
-    Van
-  }
+
 }
 </script>
 
@@ -83,11 +39,6 @@ export default {
   margin-bottom: 5px;
 }
 
-.content {
-  margin-left: 18%;
-  margin-right: 18%;
-  margin-top: 80px;
-}
 
 .list {
   padding: 0 !important;
@@ -102,8 +53,6 @@ export default {
 
 .title {
   align-content: center;
-  width: 200px;
-  height: 50px;
   background-color: #f5f7fa;
   color: #79bbff;
   font-size: 17px;
@@ -113,13 +62,15 @@ export default {
 }
 
 .el-breadcrumb {
-    font-size: 20px;
-    line-height: 9;
+  font-size: 20px;
 }
-.el-form{
-  
+
+.main {
+  height: 500px;
+  width: 100%;
+  display: flex;
+  text-align: center;
+  justify-items: center;
 }
-.el-main{
-  margin-left: 35%;
-}
+
 </style>

@@ -1,69 +1,71 @@
 <template>
-  <el-table
-      :data="
+  <div class="main-content">
+    <el-table
+        :data="
       tableData.filter(
         (data) =>
           !search || data.car_number.toLowerCase().includes(search.toLowerCase())
       )
     "
-      style="width: 100%"
-  >
-    <el-table-column type="index"/>
-    <el-table-column label="车牌号" prop="car_number"/>
-    <el-table-column label="备注" prop="remark"/>
-    <el-table-column align="right">
-      <template #header>
-        <el-input v-model="search" size="mini" placeholder="Type to search"/>
-      </template>
-      <template #default="scope">
-        <el-button size="mini" @click="handleEdit(scope.$index, scope.row)"
-        >修改
-        </el-button>
-        <el-button
-            size="mini"
-            type="danger"
-            @click="handleDelete(scope.$index, scope.row)"
-        >删除
-        </el-button
-        >
-      </template>
-    </el-table-column>
-  </el-table>
-  <el-button class="insert" type="primary" @click=" centerDialogVisible=true ">添加车辆</el-button>
-  <el-dialog v-model="centerDialogVisible" title="添加" width="30%" center>
-    <el-form ref="form" label-width="120px">
-      <el-form-item label="车牌号">
-        <el-input v-model="updatedCar.car_number" :readonly="isUpdate"></el-input>
-      </el-form-item>
-      <el-form-item label="备注">
-        <el-input v-model="updatedCar.remark"></el-input>
-      </el-form-item>
-    </el-form>
-    <template #footer>
+        style="width: 100%"
+    >
+      <el-table-column type="index"/>
+      <el-table-column label="车牌号" prop="car_number"/>
+      <el-table-column label="备注" prop="remark"/>
+      <el-table-column align="right">
+        <template #header>
+          <el-input v-model="search" size="mini" placeholder="Type to search"/>
+        </template>
+        <template #default="scope">
+          <el-button size="mini" @click="handleEdit(scope.$index, scope.row)"
+          >修改
+          </el-button>
+          <el-button
+              size="mini"
+              type="danger"
+              @click="handleDelete(scope.$index, scope.row)"
+          >删除
+          </el-button
+          >
+        </template>
+      </el-table-column>
+    </el-table>
+    <el-button class="insert" type="primary" @click=" centerDialogVisible=true ">添加车辆</el-button>
+    <el-dialog v-model="centerDialogVisible" title="添加" width="30%" center>
+      <el-form ref="form" label-width="120px">
+        <el-form-item label="车牌号">
+          <el-input v-model="updatedCar.car_number" :readonly="isUpdate"></el-input>
+        </el-form-item>
+        <el-form-item label="备注">
+          <el-input v-model="updatedCar.remark"></el-input>
+        </el-form-item>
+      </el-form>
+      <template #footer>
       <span class="dialog-footer">
         <el-button @click="centerDialogVisible = false">取消</el-button>
         <el-button type="primary" @click="addCar"
         >确认</el-button>
       </span>
-    </template>
-  </el-dialog>
-  <el-dialog v-model="isUpdate" title="修改" width="30%" center>
-    <el-form ref="form" label-width="120px">
-      <el-form-item label="车牌号">
-        <el-input v-model="updatedCar.car_number" readonly></el-input>
-      </el-form-item>
-      <el-form-item label="备注">
-        <el-input v-model="updatedCar.remark"></el-input>
-      </el-form-item>
-    </el-form>
-    <template #footer>
+      </template>
+    </el-dialog>
+    <el-dialog v-model="isUpdate" title="修改" width="30%" center>
+      <el-form ref="form" label-width="120px">
+        <el-form-item label="车牌号">
+          <el-input v-model="updatedCar.car_number" readonly></el-input>
+        </el-form-item>
+        <el-form-item label="备注">
+          <el-input v-model="updatedCar.remark"></el-input>
+        </el-form-item>
+      </el-form>
+      <template #footer>
       <span class="dialog-footer">
         <el-button @click="centerDialogVisible = false">取消</el-button>
         <el-button type="primary" @click="updateCar"
         >确认</el-button>
       </span>
-    </template>
-  </el-dialog>
+      </template>
+    </el-dialog>
+  </div>
 </template>
 
 <script lang="ts">
@@ -151,15 +153,19 @@ export default {
 }
 </script>
 <style scoped>
+
 :deep(.el-button--primar) {
   --el-button-background-color: #ecf5ff;
+}
+.main-content{
+  width: 600px;
 }
 
 .insert {
   background: #ecf5ff;
   border-color: #ecf5ff;
   color: black;
-  margin-top: 50px;
+  margin-top: 30px;
 }
 
 /* :deep(.el-button){
