@@ -36,9 +36,13 @@
     <el-table-column label="费用" prop="money"> </el-table-column>
     <el-table-column label="操作" width="150">
       <template v-slot="scope">
-        <el-button size="primary" round @click="pay(scope.row)">{{
-          scope.row.isPaid ? "已支付" : "待支付"
-        }}</el-button>
+        <el-button
+          size="primary"
+          round
+          @click="pay(scope.row)"
+          v-show="scope.row.status != 2"
+          >{{ scope.row.isPaid ? "已支付" : "待支付" }}</el-button
+        >
       </template>
     </el-table-column>
   </el-table>
@@ -60,8 +64,8 @@ export default {
         timestr[0] + "\n" + timestr[1].substring(0, timestr[1].lastIndexOf(":"))
       );
     },
-    showStatus(row) {
-      switch (row.status) {
+    showStatus(status) {
+      switch (status) {
         case 0:
           return "正常";
         case 1:
@@ -76,12 +80,13 @@ export default {
     },
     pay(row) {
       if (row.isPaid == 0) {
+        row.isPaid = 1;
         axios
           .post("/api/user/bill/pay_bill", { bill_ID: row.bill_ID })
           .then((resp) => {
             ElMessage({
               type: "success",
-              message: "支付成功请刷新页面！",
+              message: "支付成功！",
             });
           })
           .catch((err) => {

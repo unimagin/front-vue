@@ -40,7 +40,7 @@
             ><el-button
               size="mini"
               type="danger"
-              @click="cancelReservation(scope.row)"
+              @click="cancelReservation(scope.$index, scope.row)"
               >取消预约
             </el-button></el-col
           >
@@ -129,14 +129,14 @@ export default {
           console.log(resp);
           ElMessage({
             type: "success",
-            message: "成功修改预约的车辆，请刷新页面！",
+            message: "成功修改预约的车辆",
           });
         })
         .catch((err) => {
           console.log(err);
         });
     },
-    cancelReservation(row) {
+    cancelReservation(index, row) {
       if (row.used == 0) {
         ElMessageBox({
           title: "Warning!",
@@ -162,7 +162,7 @@ export default {
         }).then((action) => {
           ElMessage({
             type: "success",
-            message: "取消预约成功，请刷新页面！",
+            message: "取消预约成功",
           });
         });
       } else {
@@ -197,7 +197,7 @@ export default {
           .then((resp) => {
             console.log(resp);
             ElMessage({
-              message: "预约已完成请刷新页面！",
+              message: "预约已完成！",
               type: "success",
             });
           })
@@ -215,6 +215,31 @@ export default {
     },
   },
   created() {
+    const user = JSON.parse(localStorage.getItem("user"));
+    axios
+      .post("/api/user/look_reservation", user)
+      .then((resp) => {
+        this.tableData = resp.data.reservations;
+        for (var i = 0; i < this.tableData.length; i++) {
+          this.tableData[i].begin_time = new Date(this.tableData[i].begin_time);
+          this.tableData[i].end_time = new Date(this.tableData[i].end_time);
+        }
+        console.log(this.tableData);
+        console.log(localStorage);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    axios
+      .post("/api/user/look_cars", user)
+      .then((resp) => {
+        this.owner_cars = resp.data;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  },
+  updated() {
     const user = JSON.parse(localStorage.getItem("user"));
     axios
       .post("/api/user/look_reservation", user)
