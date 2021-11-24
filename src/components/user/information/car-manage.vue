@@ -95,9 +95,13 @@ export default {
       const res = await axios.post("/api/user/del_cars", {
         car_number: row.car_number,
         user: user
-      })
+      }).catch(() => {
+        this.$finishLoading();
+        this.$message.success("删除失败");
+        return
+      });
       this.$finishLoading();
-      this.tableData = res.data
+      this.tableData = res ? res.data : this.tableData;
       this.$message.success("删除成功");
     },
     async addCar() {
@@ -111,13 +115,19 @@ export default {
           car_number: this.updatedCar.car_number,
           remark: this.updatedCar.remark,
           user: user
+        }).catch(() => {
+          this.$finishLoading();
+          this.$message.success("添加失败");
+          return
         })
         this.$finishLoading();
-        this.tableData.push({
-          car_number: this.updatedCar.car_number,
-          remark: this.updatedCar.remark,
-        })
-        this.$message.success("添加成功");
+        if (res) {
+          this.tableData.push({
+            car_number: this.updatedCar.car_number,
+            remark: this.updatedCar.remark,
+          })
+          this.$message.success("添加成功");
+        }
       }
     },
     async updateCar() {
@@ -148,7 +158,9 @@ export default {
           this.tableData = res.data;
           this.$finishLoading();
         }
-    )
+    ).catch(() => {
+      this.$finishLoading();
+    })
   }
 }
 </script>
@@ -157,7 +169,8 @@ export default {
 :deep(.el-button--primar) {
   --el-button-background-color: #ecf5ff;
 }
-.main-content{
+
+.main-content {
   width: 600px;
 }
 
@@ -168,7 +181,4 @@ export default {
   margin-top: 30px;
 }
 
-/* :deep(.el-button){
-      background:#ecf5ff;
-} */
 </style>
