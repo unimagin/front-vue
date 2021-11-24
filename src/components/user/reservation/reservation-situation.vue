@@ -32,7 +32,7 @@
             ><el-button
               :disabled="isFinished"
               size="mini"
-              @click="finishReservation(scope.row)"
+              @click="finishReservation(scope.$index, scope.row)"
               >已完成
             </el-button></el-col
           >
@@ -127,6 +127,7 @@ export default {
         })
         .then((resp) => {
           console.log(resp);
+          this.tableData[this.form_index].car_number = this.form.car_number;
           ElMessage({
             type: "success",
             message: "成功修改预约的车辆",
@@ -156,6 +157,10 @@ export default {
                     console.log(err);
                   });
               }, 800);
+              this.tableData.splice(
+                index,
+                Object.keys(this.tableData[index]).length
+              );
             }
             done();
           },
@@ -189,7 +194,7 @@ export default {
           });
       }
     },
-    finishReservation(row) {
+    finishReservation(index, row) {
       if (row.used == 1) {
         console.log(typeof row.begin_time);
         axios
@@ -204,6 +209,7 @@ export default {
           .catch((err) => {
             console.log(err);
           });
+        this.tableData.splice(index, Object.keys(this.tableData[index]).length);
       } else {
         ElMessageBox.alert("您仍未到达不可确认完成预约！", "Warning！", {
           confirmButtonText: "OK",
@@ -215,31 +221,6 @@ export default {
     },
   },
   created() {
-    const user = JSON.parse(localStorage.getItem("user"));
-    axios
-      .post("/api/user/look_reservation", user)
-      .then((resp) => {
-        this.tableData = resp.data.reservations;
-        for (var i = 0; i < this.tableData.length; i++) {
-          this.tableData[i].begin_time = new Date(this.tableData[i].begin_time);
-          this.tableData[i].end_time = new Date(this.tableData[i].end_time);
-        }
-        console.log(this.tableData);
-        console.log(localStorage);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-    axios
-      .post("/api/user/look_cars", user)
-      .then((resp) => {
-        this.owner_cars = resp.data;
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  },
-  updated() {
     const user = JSON.parse(localStorage.getItem("user"));
     axios
       .post("/api/user/look_reservation", user)
