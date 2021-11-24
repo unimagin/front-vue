@@ -4,23 +4,23 @@
       <el-header>
         <el-breadcrumb separator="/">
           <el-breadcrumb-item :to="{ path: '/user/reservation/park-situation' }">
-            <el-icon :size="20">
-              <user/>
-            </el-icon>
+            <i class="el-icon-coordinate">
             车位情况
+            </i>
           </el-breadcrumb-item>
           <el-breadcrumb-item :to="{ path: '/user/reservation/reservation-situation' }">
-            <el-icon :size="20">
-              <document/>
-            </el-icon>
+              <i class="el-icon-notebook-2">
+
             预约情况
+              </i>
           </el-breadcrumb-item>
+          
 
           <el-breadcrumb-item :to="{ path: '/user/reservation/rates' }">
-            <el-icon :size="20">
-              <van/>
-            </el-icon>
+            <i class="el-icon-tickets">
+            
             收费标准
+            </i>
           </el-breadcrumb-item>
         </el-breadcrumb>
       </el-header>
@@ -53,6 +53,17 @@ export default {
 
 .el-breadcrumb {
   font-size: 20px;
+}
+
+:deep([data-v-0e2fda61] .el-breadcrumb__item:last-child .el-breadcrumb__inner){
+   color: black;
+  cursor:pointer;
+  /* font-weight: bold; */
+}
+:deep([data-v-0e2fda61] .el-breadcrumb__item:last-child .el-breadcrumb__inner :hover){
+
+   color: #66b1ff;
+  
 }
 
 </style>

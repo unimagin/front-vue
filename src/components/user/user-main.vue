@@ -3,10 +3,10 @@
     <el-container>
       <el-aside>
         <el-col :span="18">
-          <el-card :body-style="{ padding: '70px' }">
+          <el-card :body-style="{ padding: '65px' }">
             <img src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"
                  class="image">
-            <div style="padding: 14px;">
+            <div style="padding: 25px;">
               <span>USER</span>
               <div class="bottom clearfix">
               </div>
@@ -92,20 +92,20 @@ export default defineComponent({
 }
 
 .image {
-  width: 220px;
-  height: 220px;
+  width: 120%;
+  height: 120px;
   border-radius: 50%;
+   display: block;
 }
-
+.el-menu-item *{
+  font-size: 16px;
+}
 .button {
   padding: 0;
   float: right;
 }
 
-.image {
-  width: 100%;
-  display: block;
-}
+
 
 .clearfix:before,
 .clearfix:after {

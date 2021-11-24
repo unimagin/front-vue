@@ -66,11 +66,26 @@ export default {
 }
 
 .main {
-  height: 500px;
+  height: 800px;
   width: 100%;
   display: flex;
   text-align: center;
   justify-items: center;
+}
+.el-main{
+  padding-top: 150px;
+  padding-left: 280px;
+}
+:deep([data-v-192bb592] .el-breadcrumb__item:last-child .el-breadcrumb__inner){
+   color: black;
+  cursor:pointer;
+  font-weight: bold;
+}
+
+:deep([data-v-192bb592] .el-breadcrumb__item:last-child .el-breadcrumb__inner:hover){
+   color: #66b1ff;
+;
+
 }
 
 </style>

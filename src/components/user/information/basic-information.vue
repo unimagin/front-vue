@@ -28,6 +28,17 @@
         </template>
       </el-form-item>
     </el-form>
+<h3>上传头像</h3>
+    <el-upload
+  class="avatar-uploader"
+  action="https://jsonplaceholder.typicode.com/posts/"
+  :show-file-list="false"
+  :on-success="handleAvatarSuccess"
+  :before-upload="beforeAvatarUpload">
+  <img v-if="imageUrl" :src="imageUrl" class="avatar">
+  <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+  
+</el-upload>
   </div>
 </template>
 
@@ -125,4 +136,37 @@ export default {
 .el-input {
   width: 300px;
 }
+:deep(.el-form-item__label){
+  font-size: 15px;
+}
+
+ :deep( .avatar-uploader .el-upload ){
+    border: 2px dashed #d9d9d9;
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    margin-top: 10px;
+    /* background-color: beige; */
+  }
+  /* .el-upload{
+    background-color: beige;
+
+  } */
+ :deep( .avatar-uploader .el-upload:hover ){
+    border-color: #409EFF;
+  }
+  :deep(.avatar-uploader-icon) {
+    font-size: 28px;
+    color: #8c939d;
+    width: 150px;
+    height: 150px;
+    line-height: 150px;
+    text-align: center;
+  }
+ :deep( .avatar) {
+    width: 150px;
+    height: 150px;
+    display: block;
+  }
 </style>
