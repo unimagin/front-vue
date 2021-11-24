@@ -32,7 +32,7 @@
             ><el-button
               :disabled="isFinished"
               size="mini"
-              @click="finishReservation(scope.$index, scope.row)"
+              @click="finishReservation(scope.row)"
               >已完成
             </el-button></el-col
           >
@@ -40,9 +40,9 @@
             ><el-button
               size="mini"
               type="danger"
-              @click="cancelReservation(scope.$index, scope.row)"
-              >取消预约
-            </el-button></el-col
+              @click="cancelReservation(scope.row)"
+              >取消预约</el-button
+            ></el-col
           >
         </el-row>
       </template>
@@ -86,6 +86,7 @@
 <script lang="ts">
 import axios from "axios";
 import { ElMessageBox, ElMessage } from "element-plus";
+import { InfoFilled } from "@element-plus/icons";
 export default {
   data() {
     return {
@@ -109,7 +110,6 @@ export default {
       if (row.used == 0) {
         this.centerDialogVisible = true;
         this.form_index = index;
-        console.log(this.tableData[index]);
         this.form = JSON.parse(JSON.stringify(this.tableData[index]));
         const begin = new Date(this.form.begin_time).toString().split(" ")[4];
         const end = new Date(this.form.end_time).toString().split(" ")[4];
@@ -125,8 +125,7 @@ export default {
           reservation_ID: this.form.reservation_ID,
           car_number: this.form.car_number,
         })
-        .then((resp) => {
-          console.log(resp);
+        .then(() => {
           this.tableData[this.form_index].car_number = this.form.car_number;
           ElMessage({
             type: "success",
@@ -137,7 +136,7 @@ export default {
           console.log(err);
         });
     },
-    cancelReservation(index, row) {
+    cancelReservation(row) {
       if (row.used == 0) {
         ElMessageBox({
           title: "Warning!",
@@ -147,28 +146,29 @@ export default {
           cancelButtonText: "取消",
           beforeClose: (action, instance, done) => {
             if (action === "confirm") {
-              setTimeout(() => {
-                axios
-                  .post("/api/user/cancel_reservation", row)
-                  .then((resp) => {
-                    console.log(resp);
-                  })
-                  .catch((err) => {
-                    console.log(err);
+              axios
+                .post("/api/user/cancel_reservation", row)
+                .then((resp) => {
+                  this.tableData = resp.data.reservations;
+                  for (var i = 0; i < this.tableData.length; i++) {
+                    this.tableData[i].begin_time = new Date(
+                      this.tableData[i].begin_time
+                    );
+                    this.tableData[i].end_time = new Date(
+                      this.tableData[i].end_time
+                    );
+                  }
+                  ElMessage({
+                    type: "success",
+                    message: "取消预约成功",
                   });
-              }, 800);
-              this.tableData.splice(
-                index,
-                Object.keys(this.tableData[index]).length
-              );
+                })
+                .catch((err) => {
+                  console.log(err);
+                });
             }
             done();
           },
-        }).then((action) => {
-          ElMessage({
-            type: "success",
-            message: "取消预约成功",
-          });
         });
       } else {
         ElMessageBox.alert("您正在使用不可取消！", "Warning！", {
@@ -194,13 +194,19 @@ export default {
           });
       }
     },
-    finishReservation(index, row) {
+    finishReservation(row) {
       if (row.used == 1) {
-        console.log(typeof row.begin_time);
         axios
           .post("/api/user/bill/generate_bill", row)
           .then((resp) => {
-            console.log(resp);
+            console.log(resp.data.reservations);
+            this.tableData = resp.data.reservations;
+            for (var i = 0; i < this.tableData.length; i++) {
+              this.tableData[i].begin_time = new Date(
+                this.tableData[i].begin_time
+              );
+              this.tableData[i].end_time = new Date(this.tableData[i].end_time);
+            }
             ElMessage({
               message: "预约已完成！",
               type: "success",
@@ -209,7 +215,6 @@ export default {
           .catch((err) => {
             console.log(err);
           });
-        this.tableData.splice(index, Object.keys(this.tableData[index]).length);
       } else {
         ElMessageBox.alert("您仍未到达不可确认完成预约！", "Warning！", {
           confirmButtonText: "OK",
@@ -230,8 +235,6 @@ export default {
           this.tableData[i].begin_time = new Date(this.tableData[i].begin_time);
           this.tableData[i].end_time = new Date(this.tableData[i].end_time);
         }
-        console.log(this.tableData);
-        console.log(localStorage);
       })
       .catch((err) => {
         console.log(err);
@@ -244,6 +247,7 @@ export default {
       .catch((err) => {
         console.log(err);
       });
+    console.log(this.tableData);
   },
 };
 </script>
