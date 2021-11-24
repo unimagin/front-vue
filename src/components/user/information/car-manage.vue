@@ -97,7 +97,7 @@ export default {
         user: user
       }).catch(() => {
         this.$finishLoading();
-        this.$message.success("删除失败");
+        this.$message.error("删除失败");
         return
       });
       this.$finishLoading();
@@ -117,7 +117,7 @@ export default {
           user: user
         }).catch(() => {
           this.$finishLoading();
-          this.$message.success("添加失败");
+          this.$message.error("添加失败");
           return
         })
         this.$finishLoading();
