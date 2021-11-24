@@ -55,12 +55,12 @@ export default {
   font-size: 20px;
 }
 
-:deep([data-v-0e2fda61] .el-breadcrumb__item:last-child .el-breadcrumb__inner){
+:deep( .el-breadcrumb__item:last-child .el-breadcrumb__inner){
    color: black;
   cursor:pointer;
   /* font-weight: bold; */
 }
-:deep([data-v-0e2fda61] .el-breadcrumb__item:last-child .el-breadcrumb__inner :hover){
+:deep( .el-breadcrumb__item:last-child .el-breadcrumb__inner :hover){
 
    color: #66b1ff;
   

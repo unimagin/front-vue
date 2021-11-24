@@ -75,13 +75,13 @@ export default {
   padding-top: 50px;
   padding-left: 100px;
 }
-:deep([data-v-192bb592] .el-breadcrumb__item:last-child .el-breadcrumb__inner){
+:deep(.el-breadcrumb__item:last-child .el-breadcrumb__inner){
    color: black;
   cursor:pointer;
   font-weight: bold;
 }
 
-:deep([data-v-192bb592] .el-breadcrumb__item:last-child .el-breadcrumb__inner:hover){
+:deep(.el-breadcrumb__item:last-child .el-breadcrumb__inner:hover){
    color: #66b1ff;
 ;
 
