@@ -84,7 +84,6 @@ export default {
 :deep(.el-breadcrumb__item:last-child .el-breadcrumb__inner:hover){
    color: #66b1ff;
 ;
-
 }
 
 </style>

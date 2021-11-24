@@ -3,10 +3,10 @@
     <div class="upload">
       <el-upload
           class="avatar-uploader"
-          action="https://jsonplaceholder.typicode.com/posts/"
-          :show-file-list="false"
-          :on-success="handleAvatarSuccess"
-          :before-upload="beforeAvatarUpload">
+          :limit="1"
+          :auto-upload="true"
+          :before-upload="beforeUploadFile"
+          show-file-list="false">
         <img v-if="imageUrl" :src="imageUrl" class="avatar">
         <i v-else class="el-icon-plus avatar-uploader-icon"></i>
       </el-upload>
@@ -44,6 +44,8 @@
 </template>
 
 <script>
+
+import axios from "axios";
 
 export default {
   data() {
@@ -84,7 +86,11 @@ export default {
             trigger: 'blur'
           }
         ]
-      }
+      },
+      fileList: [],
+      form: {
+        file: ''
+      },
     }
   },
   methods: {
@@ -94,7 +100,8 @@ export default {
         if (valid) {
           this.$showLoading("正在保存")
           this.$store.dispatch("SaveEdit", this.user)
-              .then(() => {
+              .then((res) => {
+                console.log(res)
                 this.$finishLoading();
                 this.$message.success("保存成功！");
                 this.isSaved = true
@@ -102,15 +109,30 @@ export default {
               .catch((error) => {
                 this.$finishLoading();
                 this.$message.error("保存失败")
-                /*this.$router.push({
-                  path: "/user"
-                });*/
               });
 
         } else {
           this.$message.error("请输入正确的信息");
         }
       })
+    },
+    beforeUploadFile(file) {
+      console.log(file)
+      this.uploadFile(file)
+    },
+    uploadFile(file) {
+      this.$showLoading("正在上传")
+      axios.post('/api/user/image/upload', {
+        file: file,
+        name: this.user.phone
+      }).then(res => {
+            this.$finishLoading()
+            this.$message.success("图片上传成功");
+          })
+          .catch(err => {
+            this.$finishLoading()
+            this.$message.error("图片上传失败");
+          })
     }
   },
   beforeMount() {
@@ -121,7 +143,7 @@ export default {
 </script>
 
 <style scoped>
-.upload{
+.upload {
   margin-top: -30px;
   margin-bottom: 50px;
 }
@@ -172,5 +194,8 @@ export default {
   width: 150px;
   height: 150px;
   display: block;
+}
+:deep(.el-breadcrumb__item:hover){
+  cursor: pointer;
 }
 </style>
