@@ -4,8 +4,9 @@
       <el-aside>
         <el-col :span="18">
           <el-card :body-style="{ padding: '65px' }">
-            <img src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"
-                 class="image">
+            <img
+                :src="user.imageUrl ? user.imageUrl:'https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png'"
+                class="image">
             <div style="padding: 25px;">
               <span>USER</span>
               <div class="bottom clearfix">
@@ -52,6 +53,9 @@ import {defineComponent} from "vue";
 export default defineComponent({
   name: "user",
   data() {
+    return{
+      user:{}
+    }
   },
   methods: {
     loginOut() {
@@ -69,6 +73,9 @@ export default defineComponent({
           });
     },
   },
+  created() {
+    this.user=JSON.parse(localStorage.getItem('user'));
+  }
 });
 </script>
 
@@ -122,10 +129,10 @@ export default defineComponent({
   clear: both
 }
 
-.notice::before{
+.notice::before {
   content: " ";
-  border: 3px solid red;/*设置红色*/
-  border-radius:3px;/*设置圆角*/
+  border: 3px solid red; /*设置红色*/
+  border-radius: 3px; /*设置圆角*/
   position: absolute;
   margin-left: 70px;
   margin-top: 15px;

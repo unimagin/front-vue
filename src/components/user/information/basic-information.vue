@@ -7,7 +7,7 @@
           :auto-upload="true"
           :before-upload="beforeUploadFile"
           show-file-list="false">
-        <img v-if="imageUrl" :src="imageUrl" class="avatar">
+        <img v-if="user.imageUrl" :src="user.imageUrl" class="avatar">
         <i v-else class="el-icon-plus avatar-uploader-icon"></i>
       </el-upload>
       <h3>上传头像</h3>
@@ -63,11 +63,7 @@ export default {
     }
     return {
       isSaved: true,
-      user: {
-        phone: "123",
-        email: "123",
-        bank_number: "123",
-      },
+      user: {},
       rules: {
         email: [{
           required: true,
@@ -87,15 +83,10 @@ export default {
           }
         ]
       },
-      fileList: [],
-      form: {
-        file: ''
-      },
     }
   },
   methods: {
     saveEdit() {
-      console.log("hhhh");
       this.$refs["infoForm"].validate(valid => {
         if (valid) {
           this.$showLoading("正在保存")
@@ -117,18 +108,22 @@ export default {
       })
     },
     beforeUploadFile(file) {
-      console.log(file)
       this.uploadFile(file)
     },
     uploadFile(file) {
       this.$showLoading("正在上传")
-      axios.post('/api/user/image/upload', {
-        file: file,
-        name: this.user.phone
-      }).then(res => {
-            this.$finishLoading()
-            this.$message.success("图片上传成功");
-          })
+      file.filename = this.user.phone;
+      console.log(file)
+      let formData = new FormData();
+      formData.append('avatar', file);
+      formData.append('filename', this.user.phone);
+      axios.post('/api/user/image/upload', formData).then(res => {
+        this.user = res.data.user
+        localStorage.setItem('user', JSON.stringify(res.data.user))
+        this.$finishLoading()
+        this.$message.success("图片上传成功");
+        location.reload();
+      })
           .catch(err => {
             this.$finishLoading()
             this.$message.error("图片上传失败");
@@ -136,8 +131,7 @@ export default {
     }
   },
   beforeMount() {
-    const user = JSON.parse(localStorage.getItem('user'));
-    this.user = {phone: user.phone, email: user.email, bank_number: user.bank_number}
+    this.user = JSON.parse(localStorage.getItem('user'));
   },
 }
 </script>
@@ -195,7 +189,8 @@ export default {
   height: 150px;
   display: block;
 }
-:deep(.el-breadcrumb__item:hover){
+
+:deep(.el-breadcrumb__item:hover) {
   cursor: pointer;
 }
 </style>
