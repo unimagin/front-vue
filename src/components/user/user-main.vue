@@ -28,8 +28,12 @@
               <i class="el-icon-setting"></i>
               <span slot="title">设置</span>
             </el-menu-item>
-            <el-menu-item index="" @click="loginOut">
-              <i class="el-icon-loading"></i>
+            <el-menu-item index="/user/notice">
+              <i class="el-icon-message-solid"></i>
+              <span slot="title" class="notice">消息中心</span>
+            </el-menu-item>
+            <el-menu-item index="/main" @click="loginOut">
+              <i class="el-icon-circle-close"></i>
               <span slot="title">注销</span>
             </el-menu-item>
           </el-menu>
@@ -95,16 +99,17 @@ export default defineComponent({
   width: 120%;
   height: 120px;
   border-radius: 50%;
-   display: block;
+  display: block;
 }
-.el-menu-item *{
+
+.el-menu-item * {
   font-size: 16px;
 }
+
 .button {
   padding: 0;
   float: right;
 }
-
 
 
 .clearfix:before,
@@ -116,4 +121,14 @@ export default defineComponent({
 .clearfix:after {
   clear: both
 }
+
+.notice::before{
+  content: " ";
+  border: 3px solid red;/*设置红色*/
+  border-radius:3px;/*设置圆角*/
+  position: absolute;
+  margin-left: 70px;
+  margin-top: 15px;
+}
+
 </style>

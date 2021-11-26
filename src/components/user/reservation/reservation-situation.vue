@@ -168,10 +168,7 @@ export default {
                           this.tableData[i].end_time
                       );
                     }
-                    ElMessage({
-                      type: "success",
-                      message: "取消预约成功",
-                    });
+                    this.$message.success("取消预约成功");
                   })
                   .catch((err) => {
                     console.log(err);

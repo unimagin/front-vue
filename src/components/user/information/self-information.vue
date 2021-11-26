@@ -16,7 +16,14 @@
             <i class="el-icon-bicycle"></i>
             车辆管理
           </el-breadcrumb-item>
-
+          <el-breadcrumb-item :to="{ path: '/user/self-information/userCenter' }">
+            <i class="el-icon-s-check"></i>
+            用户中心
+          </el-breadcrumb-item>
+          <el-breadcrumb-item :to="{ path: '/user/self-information/viewData' }">
+            <i class="el-icon-view"></i>
+            数据浏览
+          </el-breadcrumb-item>
         </el-breadcrumb>
       </el-header>
       <el-main class="main">

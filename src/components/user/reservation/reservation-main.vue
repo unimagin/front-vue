@@ -10,16 +10,17 @@
           </el-breadcrumb-item>
           <el-breadcrumb-item :to="{ path: '/user/reservation/reservation-situation' }">
               <i class="el-icon-notebook-2">
-
             预约情况
               </i>
           </el-breadcrumb-item>
-          
-
           <el-breadcrumb-item :to="{ path: '/user/reservation/rates' }">
             <i class="el-icon-tickets">
-            
             收费标准
+            </i>
+          </el-breadcrumb-item>
+          <el-breadcrumb-item :to="{ path: '/user/reservation/parkManage' }">
+            <i class="el-icon-s-management">
+              停车处理
             </i>
           </el-breadcrumb-item>
         </el-breadcrumb>

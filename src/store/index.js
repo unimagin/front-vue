@@ -29,6 +29,7 @@ const store = createStore({
                     .then(resp => {
                         const token = resp.data.token
                         const user = resp.data.user
+                        localStorage.clear();
                         user.password = params.password;
                         for (let i = 0; i < checkList.length; i++) {
                             if (checkList[i] == '记住密码') {

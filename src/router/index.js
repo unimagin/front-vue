@@ -14,6 +14,10 @@ import BasicInformation from "../components/user/information/basic-information.v
 import CarManage from "../components/user/information/car-manage.vue"
 import Rates from "../components/user/reservation/rates.vue"
 import Setting from "../components/user/setting/setting-main.vue"
+import Notice from "../components/user/notice/notice.vue"
+import userCenter from "../components/user/information/user-center.vue"
+import ParkManage from "../components/user/reservation/park-manage.vue"
+import viewData from "../components/user/information/view-data.vue"
 
 const routes = [
     {
@@ -64,6 +68,14 @@ const routes = [
                         path: 'car',
                         component: CarManage,
                     },
+                    {
+                        path: 'userCenter',
+                        component: userCenter
+                    },
+                    {
+                        path: 'viewData',
+                        component: viewData
+                    }
                 ]
             },
             {
@@ -82,6 +94,10 @@ const routes = [
                     {
                         path: "rates",
                         component: Rates
+                    },
+                    {
+                        path: 'parkManage',
+                        component: ParkManage
                     }
                 ]
 
@@ -89,6 +105,10 @@ const routes = [
             {
                 path: 'setting',
                 component: Setting
+            },
+            {
+                path: 'notice',
+                component: Notice
             }
         ]
     }
