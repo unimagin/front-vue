@@ -6,6 +6,7 @@ import 'element-plus/dist/index.css'
 import store from './store'
 import axios from "./config/axios_config.js"
 import {ElLoading} from "element-plus";
+import * as echarts from 'echarts'
 
 let loading;
 const isLoading = (show_text) => {
@@ -25,4 +26,5 @@ const app = createApp(App)
 app.config.productionTip = false
 app.config.globalProperties.$finishLoading = finishLoading
 app.config.globalProperties.$showLoading = isLoading
+app.config.globalProperties.$echarts = echarts
 app.use(router).use(store).use(ElementPlus).mount('#app')
