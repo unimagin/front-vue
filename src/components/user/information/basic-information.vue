@@ -126,6 +126,7 @@ export default {
       console.log(this.user)
       localStorage.setItem('user', JSON.stringify(this.user))
       this.$finishLoading()
+      location.reload();
       this.$message.success("图片上传成功");
     }
   },
