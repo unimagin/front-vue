@@ -41,7 +41,7 @@
       </el-col>
     </el-row>
 
-    <el-row style="margin-left: 50px">
+    <el-row style="margin-left: 60px;margin-top:80px">
       <template v-if="finished">
         <template v-for="row in rows">
           <div class="row" direction="vertical">
@@ -73,6 +73,29 @@
         </template>
       </template>
     </el-row>
+
+    <div class="box" style="display:flex">
+    
+    <div class="t1">
+    <el-tooltip class="item" effect="dark"  >
+      <el-button>空闲车位</el-button>
+    </el-tooltip>
+    </div>
+  
+  <div class="t2">
+    <el-tooltip class="item" effect="dark" >
+      <el-button>半空闲车位</el-button>
+    </el-tooltip>
+    
+  </div>
+
+  <div class="t3">
+    <el-tooltip class="item" effect="dark" >
+      <el-button>占用车位</el-button>
+    </el-tooltip>
+   
+  </div>
+</div>
 
     <el-dialog v-model="centerDialogVisible" title="预约" width="30%" center>
       <el-form ref="form" label-width="120px">
@@ -220,7 +243,7 @@ export default {
 }
 
 .row {
-  height: 60px;
+  height: 70px;
   width: 100%;
   margin-bottom: 20px;
 }
@@ -243,21 +266,15 @@ export default {
 }
 
 .el-button--1 {
-  background-color: #4caf50;
+  background-color: #ade2af;
 }
 
 .el-button--2 {
-  background-color: #ffcdd2;
+  background-color: #8dc8f8;
 }
 
 .el-button--3 {
-  background-color: #e53935;
-}
-
-.content {
-  margin-left: 18%;
-  margin-right: 18%;
-  margin-top: 80px;
+  background-color: #f78c8a;
 }
 
 .list {
@@ -267,4 +284,68 @@ export default {
   font-size: medium !important;
 }
 
+.box {
+  display: flex;
+  margin-top: -400px;
+  margin-left: 300px;
+    width: 400px;
+      float: right;
+
+}
+    .t1 {
+      text-align: center;
+      float: left;
+      width: 50px;
+    }
+
+    .t2 {
+      /* float: left; */
+      width: 50px;
+      margin-top: 70px;
+      margin-left: -50px;
+
+    }
+
+  
+
+    .t3{
+      /* clear: both; */
+      text-align: center;
+       float: left;
+      width: 50px;
+      margin-top: 140px;
+  margin-left: -50px;
+
+
+    }
+
+    .item {
+      margin: 10px;
+    }
+
+    .left .el-tooltip__popper,
+    .right .el-tooltip__popper {
+      padding: 8px 10px;
+    }
+  
+
+.t1 .el-button{
+  background: #ade2af;
+  width: 120px;
+  height: 50px;
+
+}
+.t2 .el-button{
+  background:  #8dc8f8;
+  width: 120px;
+  height: 50px;
+  
+}
+.t3 .el-button{
+  background: #f78c8a;
+  width: 120px;
+  height: 50px;
+
+
+}
 </style>
