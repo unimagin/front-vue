@@ -4,9 +4,10 @@
       <el-upload
           class="avatar-uploader"
           :limit="1"
-          :auto-upload="true"
           :before-upload="beforeUploadFile"
-          show-file-list="false">
+          accept="image/jpeg,image/gif,image/png,image/jpg"
+          show-file-list="true"
+      >
         <img v-if="user.imageUrl" :src="user.imageUrl" class="avatar">
         <i v-else class="el-icon-plus avatar-uploader-icon"></i>
       </el-upload>
@@ -110,28 +111,27 @@ export default {
     beforeUploadFile(file) {
       this.uploadFile(file)
     },
-    uploadFile(file) {
+    async uploadFile(file) {
       this.$showLoading("正在上传")
       file.filename = this.user.phone;
-      console.log(file)
       let formData = new FormData();
       formData.append('avatar', file);
       formData.append('filename', this.user.phone);
-      axios.post('/api/user/image/upload', formData).then(res => {
-        this.user = res.data.user
-        localStorage.setItem('user', JSON.stringify(res.data.user))
-        this.$finishLoading()
-        this.$message.success("图片上传成功");
-        location.reload();
-      })
+      const res = await axios.post('/api/user/image/upload', formData)
           .catch(err => {
             this.$finishLoading()
             this.$message.error("图片上传失败");
           })
+      this.user.imageUrl = res.data.user.imageUrl
+      console.log(this.user)
+      localStorage.setItem('user', JSON.stringify(this.user))
+      this.$finishLoading()
+      this.$message.success("图片上传成功");
     }
   },
   beforeMount() {
     this.user = JSON.parse(localStorage.getItem('user'));
+    console.log(this.user)
   },
 }
 </script>

@@ -73,7 +73,7 @@ export default defineComponent({
           });
     },
   },
-  created() {
+  beforeMount() {
     this.user=JSON.parse(localStorage.getItem('user'));
   }
 });
