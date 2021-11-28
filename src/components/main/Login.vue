@@ -1,38 +1,41 @@
 <template>
-  <div class="login"
-       clearfix>
+  <div class="login" clearfix>
     <div class="login-wrap">
-      <el-form ref="loginForm"
-               :model="user"
-               :rules="loginRules"
-               status-icon
-               label-width="120px">
+      <el-form
+        ref="loginForm"
+        :model="user"
+        :rules="loginRules"
+        status-icon
+        label-width="120px"
+      >
         <el-form-item label="手机号" prop="phone" class="item">
-          <el-input v-model="user.phone"
-                    placeholder="请输入手机号"></el-input>
+          <el-input v-model="user.phone" placeholder="请输入手机号"></el-input>
         </el-form-item>
         <el-form-item label="密码" prop="password" class="item2">
-          <el-input v-model="user.password"
-                    show-password
-                    placeholder="请输入密码"></el-input>
+          <el-input
+            v-model="user.password"
+            show-password
+            placeholder="请输入密码"
+          ></el-input>
         </el-form-item>
         <el-form-item>
           <el-checkbox-group v-model="checkList">
-            <el-checkbox label="自动登录"/>
-            <el-checkbox label="记住密码"
-                         ref="rememberMe"
-                         style="margin-right: auto;margin-left: 90px"/>
+            <el-checkbox label="自动登录" />
+            <el-checkbox
+              label="记住密码"
+              ref="rememberMe"
+              style="margin-right: auto; margin-left: 90px"
+            />
           </el-checkbox-group>
         </el-form-item>
         <el-form-item size="large">
-          <el-button type="primary"
-                     icon="el-icon-upload"
-                     @click="doLogin()">登 录
+          <el-button type="primary" icon="el-icon-upload" @click="doLogin()"
+            >登 录
           </el-button>
         </el-form-item>
       </el-form>
       <el-container direction="horizontal">
-        <div class="find" style="color:black;">
+        <div class="find" style="color: black">
           <router-link to="/">找回密码</router-link>
         </div>
         <div class="register">
@@ -47,7 +50,7 @@
 
 export default {
   name: "login",
-  data() {
+  data () {
     var phoneCheck = (rule, value, callback) => {
       const reg = /^[1][3-9][0-9]{9}$/;
       if (value == '' || value == undefined || value == null) {
@@ -67,10 +70,10 @@ export default {
           message: '请输入手机号',
           trigger: 'blur'
         },
-          {
-            validator: phoneCheck,
-            trigger: 'blur'
-          }
+        {
+          validator: phoneCheck,
+          trigger: 'blur'
+        }
         ],
         password: [
           {
@@ -88,7 +91,7 @@ export default {
     };
   },
   methods: {
-    doLogin() {
+    doLogin () {
       this.$refs["loginForm"].validate(valid => {
         if (valid) {
           this.$showLoading("正在登录");
@@ -100,26 +103,26 @@ export default {
             params: params,
             checkList: this.checkList
           })
-              .then(() => {
-                setTimeout(() => {
-                  this.$finishLoading();
-                  this.$message.success("登录成功！");
-                  this.$router.push({
-                    path: "/user"
-                  });
-                }, 800)
-              })
-              .catch((error) => {
+            .then(() => {
+              setTimeout(() => {
                 this.$finishLoading();
-                this.$message.error("您输入的用户名或密码错误！");
-              });
+                this.$message.success("登录成功！");
+                this.$router.push({
+                  path: "/user"
+                });
+              }, 800)
+            })
+            .catch((error) => {
+              this.$finishLoading();
+              this.$message.error("您输入的用户名或密码错误！");
+            });
         } else {
           this.$message.error("请输入正确的信息");
         }
       });
     }
   },
-  created() {
+  created () {
     if (localStorage.getItem("autoLogin")) {
       this.checkList.push("自动登录");
     }
@@ -132,7 +135,7 @@ export default {
       this.user = JSON.parse(localStorage.getItem('user'))
     }
   },
-  mounted() {
+  mounted () {
     if (localStorage.getItem("autoLogin")) {
       setTimeout(() => {
         this.doLogin()
@@ -155,7 +158,6 @@ export default {
 
   background: url("http://www.etcp.cn/static/images/index_img2.png") no-repeat;
   background-size: 100% 100%;
-
 }
 
 .login-wrap {
@@ -191,7 +193,6 @@ export default {
   /*边框阴影  水平阴影0 垂直阴影15px 模糊25px 颜色黑色透明度0.5*/
   border-radius: 15px;
 }
-
 
 .el-form-item:nth-child(2) {
   /* background-color: yellow;  */
@@ -253,11 +254,8 @@ export default {
 }
 
 .find {
-
   margin-left: 18%;
   margin-right: auto;
-
-
 }
 
 .register {

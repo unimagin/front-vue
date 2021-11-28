@@ -7,7 +7,9 @@
             <i class="el-icon-user"></i>
             基本信息
           </el-breadcrumb-item>
-          <el-breadcrumb-item :to="{ path: '/user/self-information/reservation-information' }">
+          <el-breadcrumb-item
+            :to="{ path: '/user/self-information/reservation-information' }"
+          >
             <i class="el-icon-document"></i>
             预约记录
           </el-breadcrumb-item>
@@ -16,7 +18,9 @@
             <i class="el-icon-bicycle"></i>
             车辆管理
           </el-breadcrumb-item>
-          <el-breadcrumb-item :to="{ path: '/user/self-information/userCenter' }">
+          <el-breadcrumb-item
+            :to="{ path: '/user/self-information/userCenter' }"
+          >
             <i class="el-icon-s-check"></i>
             用户中心
           </el-breadcrumb-item>
@@ -45,7 +49,6 @@ export default {
   margin-right: 10px;
   margin-bottom: 5px;
 }
-
 
 .list {
   padding: 0 !important;
@@ -78,19 +81,17 @@ export default {
   text-align: center;
   justify-items: center;
 }
-.el-main{
+.el-main {
   padding-top: 50px;
   padding-left: 100px;
 }
-:deep(.el-breadcrumb__item:last-child .el-breadcrumb__inner){
-   color: black;
-  cursor:pointer;
+:deep(.el-breadcrumb__item:last-child .el-breadcrumb__inner) {
+  color: black;
+  cursor: pointer;
   font-weight: bold;
 }
 
-:deep(.el-breadcrumb__item:last-child .el-breadcrumb__inner:hover){
-   color: #66b1ff;
-;
+:deep(.el-breadcrumb__item:last-child .el-breadcrumb__inner:hover) {
+  color: #66b1ff;
 }
-
 </style>

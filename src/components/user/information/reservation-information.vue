@@ -86,7 +86,7 @@ export default {
         return " background-color: #f4f4f5;";
       } else if (row.status == 0) {
         return " background-color: #e1f3d8";
-      } else if ((row.status = 4)) {
+      } else if (row.status == 4) {
         return " background-color: #fde2e2";
       }
       return "background-color: #fef0f0";
@@ -117,14 +117,25 @@ export default {
     },
     pay(row) {
       if (row.isPaid == 0) {
-        row.isPaid = 1;
         axios
           .post("/api/user/bill/pay_bill", { bill_ID: row.bill_ID })
           .then((resp) => {
-            ElMessage({
-              type: "success",
-              message: "支付成功！",
-            });
+            const fail = resp.data.fail;
+            if (fail) {
+              ElMessage({
+                type: "warning",
+                message: "余额不足，支付失败！请充值！",
+              });
+            } else {
+              row.isPaid = 1;
+              ElMessage({
+                type: "success",
+                message: "支付成功！",
+              });
+              const user = resp.data.user;
+              localStorage.setItem("user", JSON.stringify(user));
+              this.$store.commit("selfEdit", JSON.stringify(user));
+            }
           })
           .catch((err) => {
             console.log(err);
@@ -143,6 +154,7 @@ export default {
           this.total_bills[i] = resp.data.bills.slice(i * 15, (i + 1) * 15);
         }
         this.bills = this.total_bills[0];
+        console.log(this.bills);
       })
       .catch((err) => {
         console.log(err);
