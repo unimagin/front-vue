@@ -56,8 +56,9 @@ export default {
     addBalance () {
       axios.post('/api/user/add_balance', { money: this.money })
         .then((resp) => {
-          const user = resp.data.user
-          this.balance = user.balance
+          const user = JSON.parse(localStorage.getItem("user"));
+          this.balance = resp.data.balance
+          user.balance = this.balance
           localStorage.setItem('user', JSON.stringify(user))
           this.$store.commit('selfEdit', JSON.stringify(user))
         })

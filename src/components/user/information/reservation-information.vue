@@ -132,7 +132,8 @@ export default {
                 type: "success",
                 message: "支付成功！",
               });
-              const user = resp.data.user;
+              const user = JSON.parse(localStorage.getItem("user"));
+              user.balance = resp.data.balance;
               localStorage.setItem("user", JSON.stringify(user));
               this.$store.commit("selfEdit", JSON.stringify(user));
             }
