@@ -130,6 +130,7 @@ export default {
     },
     saveReservation() {
       this.form.saved = true;
+      this.centerDialogVisible = false;
       axios
           .post("/api/user/reservation/modify_reservation", {
             reservation_ID: this.form.reservation_ID,
@@ -242,6 +243,7 @@ export default {
             this.tableData[i].begin_time = new Date(this.tableData[i].begin_time);
             this.tableData[i].end_time = new Date(this.tableData[i].end_time);
           }
+          console.log(this.tableData)
         })
         .catch((err) => {
           console.log(err);
@@ -254,7 +256,6 @@ export default {
         .catch((err) => {
           console.log(err);
         });
-    console.log(this.tableData);
   },
 };
 </script>

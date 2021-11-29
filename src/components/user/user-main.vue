@@ -25,10 +25,6 @@
               <i class="el-icon-menu"></i>
               <span slot="title">车辆主页</span>
             </el-menu-item>
-            <el-menu-item index="/user/setting">
-              <i class="el-icon-setting"></i>
-              <span slot="title">设置</span>
-            </el-menu-item>
             <el-menu-item index="/user/notice">
               <i class="el-icon-message-solid"></i>
               <span slot="title" class="notice">消息中心</span>
@@ -53,8 +49,8 @@ import {defineComponent} from "vue";
 export default defineComponent({
   name: "user",
   data() {
-    return{
-      user:{}
+    return {
+      user: {}
     }
   },
   methods: {
@@ -74,7 +70,7 @@ export default defineComponent({
     },
   },
   beforeMount() {
-    this.user=JSON.parse(localStorage.getItem('user'));
+    this.user = JSON.parse(localStorage.getItem('user'));
   }
 });
 </script>

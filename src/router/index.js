@@ -13,7 +13,6 @@ import ReservationInformation from "../components/user/information/reservation-i
 import BasicInformation from "../components/user/information/basic-information.vue"
 import CarManage from "../components/user/information/car-manage.vue"
 import Rates from "../components/user/reservation/rates.vue"
-import Setting from "../components/user/setting/setting-main.vue"
 import Notice from "../components/user/notice/notice.vue"
 import userCenter from "../components/user/information/user-center.vue"
 import ParkManage from "../components/user/reservation/park-manage.vue"
@@ -101,10 +100,6 @@ const routes = [
                     }
                 ]
 
-            },
-            {
-                path: 'setting',
-                component: Setting
             },
             {
                 path: 'notice',
