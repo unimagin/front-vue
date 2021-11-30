@@ -229,9 +229,6 @@ export default {
         });
       }
     },
-    onSubmit() {
-      console.log("submit!");
-    },
   },
   created() {
     const user = JSON.parse(localStorage.getItem("user"));

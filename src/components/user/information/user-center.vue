@@ -32,7 +32,7 @@
                 <template #header>
                   <div class="card-header">
 
-                        <!-- <el-button type="text" @click="dialogFormVisible = true">打开嵌套表单的 Dialog</el-button> -->
+                    <!-- <el-button type="text" @click="dialogFormVisible = true">打开嵌套表单的 Dialog</el-button> -->
 
                     <span>{{ Card[i - 1].label }}特权</span>
                   </div>
@@ -57,79 +57,69 @@
         </el-col>
       </el-row>
     </el-dialog>
-    <el-dialog v-model="buyVIP" title="成为会员"  width="30%" center > 
-
-      <el-form :model="form">
-    <el-form-item label="开通期限">
-      <el-input v-model="form.time" autocomplete="off"></el-input>
-      个月
-    </el-form-item>
-    <el-form-item label="银行卡号" >
-      <el-input v-model="form.number" autocomplete="off"></el-input>
-    </el-form-item>
-      <el-form-item label="总金额为" >
-      <el-input v-model="form.money" autocomplete="off"></el-input>
-      元
-    </el-form-item>
-     <el-button type="primary" round>确认开通</el-button>
-
-  </el-form>
-<!-- 
-      1. 时间多少天
-      2。 银行卡 ： 只读
-      3。 总金额：
-      确定 -->
+    <el-dialog v-model="buyVIP" title="成为会员" width="30%" center>
+      <el-form :model="vipForm">
+        <el-form-item label="开通期限">
+          <el-input v-model="vipForm.time" autocomplete="off"></el-input>
+          个月
+        </el-form-item>
+        <el-form-item label="银行卡号">
+          <el-input autocomplete="off" v-model="user.bank_number" readonly></el-input>
+        </el-form-item>
+        <el-form-item label="总金额为">
+          <el-input v-model="vipForm.money" autocomplete="off"></el-input>
+          元
+        </el-form-item>
+        <el-button type="primary" round @click="getVIP">确认开通</el-button>
+      </el-form>
     </el-dialog>
     <el-dialog v-model="buyContract" title="成为合同用户" width="30%" center>
-
-          <el-form :model="form">
-    <el-form-item label="开通期限" >
-      <el-input v-model="form.time" autocomplete="off"></el-input>
-      个月
-    </el-form-item>
-    <el-form-item label="银行卡号" >
-      <el-input v-model="form.number" autocomplete="off"></el-input>
-    </el-form-item>
-      <el-form-item label="预约车位">
- <el-select v-model="form.parking_number" placeholder="请选择预约的车位">
-        <el-option label="" value=""></el-option>
-        <el-option label="" value=""></el-option>
-      </el-select>
-      
-     </el-form-item>
-     <el-form-item label="预约时间">
- <el-select v-model="form.data1" placeholder="请选择预约起始时间">
-        <el-option label="" value=""></el-option>
-        <el-option label="" value=""></el-option>
-      </el-select>
-      <el-select v-model="form.data2" placeholder="请选择预约结束时间">
-        <el-option label="" value=""></el-option>
-        <el-option label="" value=""></el-option>
-      </el-select>
-     </el-form-item>
-     <el-form-item label="预约车辆">
- <el-select v-model="form.car" placeholder="请选择预约的车辆">
-        <el-option label="" value=""></el-option>
-        <el-option label="" value=""></el-option>
-      </el-select>
-      
-     </el-form-item>
-     <el-form-item label="总金额为" >
-      <el-input v-model="form.money" autocomplete="off"></el-input>
-      元
-    </el-form-item>
-     <el-button type="primary" round>确认开通</el-button>
-
-  </el-form>
-
-      <!-- 1. 时间：多少天
-      2。 银行卡 ： 只读
-      3。 选择每次预约的车位：
-      4。 选择每次预约的初始时间
-      5。 选择每次预约的结束时间
-      6。 选择每次预约的车辆
-      7。 总金额：
-      确定 -->
+      <el-form :model="ContractForm">
+        <el-form-item label="开通期限">
+          <el-input v-model="ContractForm.time" autocomplete="off"></el-input>
+          个月
+        </el-form-item>
+        <el-form-item label="银行卡号">
+          <el-input readonly autocomplete="off" v-model="user.bank_number "></el-input>
+        </el-form-item>
+        <el-form-item label="预约车位">
+          <el-input placeholder="请输入预约的车位" v-model="ContractForm.parking_number" autocomplete="off">
+          </el-input>
+        </el-form-item>
+        <el-form-item label="预约时间">
+          <el-time-select
+              v-model="ContractForm.begin_time"
+              placeholder="Start time"
+              start="00:00"
+              step="00:15"
+              end="24:00"
+          >
+          </el-time-select>
+          <el-time-select
+              v-model="ContractForm.end_time"
+              :min-time="ContractForm.begin_time"
+              placeholder="End time"
+              start="00:00"
+              step="00:15"
+              end="24:00"
+          />
+        </el-form-item>
+        <el-form-item label="预约车辆">
+          <el-select v-model="ContractForm.car" placeholder="请选择预约的车辆">
+            <template v-for="item in user.car">
+              <el-option
+                  :label="item.car_number"
+                  :value="item.car_number"
+              ></el-option>
+            </template>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="总金额为">
+          <el-input v-model="ContractForm.money" autocomplete="off"></el-input>
+          元
+        </el-form-item>
+        <el-button type="primary" round>确认开通</el-button>
+      </el-form>
     </el-dialog>
   </div>
 </template>
@@ -164,20 +154,20 @@ export default {
       user: {},
       buyVIP: false,
       buyContract: false,
-
-        dialogFormVisible: false,
-        form: {
-          time: '',
-          number: '',
-          money: '',
-          data1:'',
-          data2:'',
-          car:'',
-          parking_number:'',
-          
-
-         
-        },
+      dialogFormVisible: false,
+      vipForm: {
+        time: '',
+        money: '',
+      },
+      ContractForm: {
+        time: '',
+        number: '',
+        money: '',
+        begin_time: '07:00',
+        end_time: '07:15',
+        car: '',
+        parking_number: '',
+      },
     }
   },
   methods: {
@@ -198,22 +188,27 @@ export default {
     buyCard(cardIndex) {
       console.log(cardIndex)
       if (cardIndex == 1) {
-        this.getVIP();
+        this.buyVIP = true;
       } else {
-        this.getContract();
+        this.buyContract = true;
       }
     },
     getVIP() {
-      this.buyVIP = true;
+      this.buyVIP = false;
     },
     getContract() {
-      this.buyContract = true;
-    }
+
+    },
   },
   created() {
     const user = JSON.parse(localStorage.getItem("user"));
     this.balance = user.balance
     this.user = user;
+    axios.post("/api/user/look_cars", {
+      user: user,
+    }).then((res) => {
+      this.user.car = res.data;
+    })
   }
 }
 </script>
@@ -223,23 +218,26 @@ export default {
   margin-left: 50px;
   margin-top: 5px;
 }
-.el-card{
+
+.el-card {
   display: flex;
   float: left;
 }
-.el-input
-{
-  width:70%;
+
+.el-input {
+  width: 70%;
 }
-:deep(.el-form-item__label){
-  padding-left:50px;
+
+:deep(.el-form-item__label) {
+  padding-left: 50px;
   padding-top: 0px;
-  
+
 }
-.el-button.is-round{
- margin-left:35%;
- margin-top: 20px;
- background-color:#a5d1fd;
- border-color:#a5d1fd;
+
+.el-button.is-round {
+  margin-left: 35%;
+  margin-top: 20px;
+  background-color: #a5d1fd;
+  border-color: #a5d1fd;
 }
 </style>

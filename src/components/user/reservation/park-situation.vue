@@ -40,7 +40,6 @@
         <el-button type="primary" round @click="search">查询</el-button>
       </el-col>
     </el-row>
-
     <el-row style="margin-left: 60px; margin-top: 80px">
       <template v-if="finished">
         <template v-for="row in rows">
@@ -75,7 +74,6 @@
         </template>
       </template>
     </el-row>
-
     <div class="box" style="display: flex">
       <div class="t1">
         <el-tooltip class="item" effect="dark">
@@ -116,9 +114,9 @@
             v-model="begin_time"
             placeholder="Start time"
             disabled
-            start="07:00"
+            start="00:00"
             step="00:15"
-            end="22:30"
+            end="24:00"
           >
           </el-time-select>
           <el-time-select
@@ -126,9 +124,9 @@
             :min-time="begin_time"
             placeholder="End time"
             disabled
-            start="07:00"
+            start="00:00"
             step="00:15"
-            end="22:30"
+            end="24:00"
           >
           </el-time-select>
         </el-form-item>
@@ -158,8 +156,7 @@ export default {
     }).then((res) => {
       this.owner_cars = res.data;
       this.$finishLoading();
-    }
-    )
+    })
   },
   data () {
     return {
