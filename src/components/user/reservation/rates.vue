@@ -6,10 +6,10 @@
           <h2>{{ item.label }}</h2>
         </div>
         <div class="text item">
-          正常情况下停车费用为:{{ item.normalPrice }}元/小时 (不足一小时按一小时处理)
+          正常情况下停车费用为:{{ item.normalPrice }}元/小时 (不足1小时按1小时处理)
         </div>
         <div class="text item">
-          超出预约时限收取：{{ item.BreakPrice }}元/小时 (不足一小时按一小时处理)
+          超出预约时限收取：{{ item.BreakPrice }}元/小时 (不足1小时按1小时处理)
         </div>
       </el-card>
     </template>

@@ -2,7 +2,7 @@
   <div>
     <span>金额：{{ this.balance }}</span>
     <el-button @click="this.top_up = true">充值</el-button>
-    <div style="margin-top: 10px">卡组：</div>
+    <div style="margin-top: 15px;margin-bottom:12px">卡组：</div>
     <el-collapse>
       <el-collapse-item title="已有卡组" name="1">
         <template v-for="i in Card.length" :key="i">
@@ -31,6 +31,9 @@
               <el-card class="box-card">
                 <template #header>
                   <div class="card-header">
+
+                        <!-- <el-button type="text" @click="dialogFormVisible = true">打开嵌套表单的 Dialog</el-button> -->
+
                     <span>{{ Card[i - 1].label }}特权</span>
                   </div>
                 </template>
@@ -54,21 +57,79 @@
         </el-col>
       </el-row>
     </el-dialog>
-    <el-dialog v-model="buyVIP" title="成为会员" width="30%" center>
+    <el-dialog v-model="buyVIP" title="成为会员"  width="30%" center > 
+
+      <el-form :model="form">
+    <el-form-item label="开通期限">
+      <el-input v-model="form.time" autocomplete="off"></el-input>
+      个月
+    </el-form-item>
+    <el-form-item label="银行卡号" >
+      <el-input v-model="form.number" autocomplete="off"></el-input>
+    </el-form-item>
+      <el-form-item label="总金额为" >
+      <el-input v-model="form.money" autocomplete="off"></el-input>
+      元
+    </el-form-item>
+     <el-button type="primary" round>确认开通</el-button>
+
+  </el-form>
+<!-- 
       1. 时间多少天
       2。 银行卡 ： 只读
       3。 总金额：
-      确定
+      确定 -->
     </el-dialog>
     <el-dialog v-model="buyContract" title="成为合同用户" width="30%" center>
-      1. 时间：多少天
+
+          <el-form :model="form">
+    <el-form-item label="开通期限" >
+      <el-input v-model="form.time" autocomplete="off"></el-input>
+      个月
+    </el-form-item>
+    <el-form-item label="银行卡号" >
+      <el-input v-model="form.number" autocomplete="off"></el-input>
+    </el-form-item>
+      <el-form-item label="预约车位">
+ <el-select v-model="form.parking_number" placeholder="请选择预约的车位">
+        <el-option label="" value=""></el-option>
+        <el-option label="" value=""></el-option>
+      </el-select>
+      
+     </el-form-item>
+     <el-form-item label="预约时间">
+ <el-select v-model="form.data1" placeholder="请选择预约起始时间">
+        <el-option label="" value=""></el-option>
+        <el-option label="" value=""></el-option>
+      </el-select>
+      <el-select v-model="form.data2" placeholder="请选择预约结束时间">
+        <el-option label="" value=""></el-option>
+        <el-option label="" value=""></el-option>
+      </el-select>
+     </el-form-item>
+     <el-form-item label="预约车辆">
+ <el-select v-model="form.car" placeholder="请选择预约的车辆">
+        <el-option label="" value=""></el-option>
+        <el-option label="" value=""></el-option>
+      </el-select>
+      
+     </el-form-item>
+     <el-form-item label="总金额为" >
+      <el-input v-model="form.money" autocomplete="off"></el-input>
+      元
+    </el-form-item>
+     <el-button type="primary" round>确认开通</el-button>
+
+  </el-form>
+
+      <!-- 1. 时间：多少天
       2。 银行卡 ： 只读
       3。 选择每次预约的车位：
       4。 选择每次预约的初始时间
       5。 选择每次预约的结束时间
       6。 选择每次预约的车辆
       7。 总金额：
-      确定
+      确定 -->
     </el-dialog>
   </div>
 </template>
@@ -102,7 +163,21 @@ export default {
       ownCard: [false, false],
       user: {},
       buyVIP: false,
-      buyContract: false
+      buyContract: false,
+
+        dialogFormVisible: false,
+        form: {
+          time: '',
+          number: '',
+          money: '',
+          data1:'',
+          data2:'',
+          car:'',
+          parking_number:'',
+          
+
+         
+        },
     }
   },
   methods: {
@@ -147,5 +222,24 @@ export default {
 .el-button {
   margin-left: 50px;
   margin-top: 5px;
+}
+.el-card{
+  display: flex;
+  float: left;
+}
+.el-input
+{
+  width:70%;
+}
+:deep(.el-form-item__label){
+  padding-left:50px;
+  padding-top: 0px;
+  
+}
+.el-button.is-round{
+ margin-left:35%;
+ margin-top: 20px;
+ background-color:#a5d1fd;
+ border-color:#a5d1fd;
 }
 </style>
