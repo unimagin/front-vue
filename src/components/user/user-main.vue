@@ -31,7 +31,7 @@
             </el-menu-item>
             <el-menu-item index="/main" @click="loginOut">
               <i class="el-icon-circle-close"></i>
-              <span slot="title">注销</span>
+              <span slot="title">退出登录</span>
             </el-menu-item>
           </el-menu>
         </el-col>

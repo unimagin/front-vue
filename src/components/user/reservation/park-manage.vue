@@ -32,17 +32,16 @@ export default {
       user: {}
     }
   },
-  methods: {
-
-  },
+  methods: {},
   created() {
     this.$showLoading("正在拼命加载");
-    this.axios_search();
     this.user = JSON.parse(localStorage.getItem("user"));
     axios.post("/api/user/look_cars", {
       user: this.user,
     }).then((res) => {
       this.user.car = res.data;
+      this.$finishLoading();
+    }).catch(error => {
       this.$finishLoading();
     })
   }

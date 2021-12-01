@@ -14,6 +14,21 @@
           </p>
         </template>
       </el-table-column>
+      <el-table-column label="车位" width="100">
+        <template v-slot="scope">
+          <p>{{ scope.row.parking_number }}</p>
+        </template>
+      </el-table-column>
+      <el-table-column label="开始时间" width="100">
+        <template v-slot="scope">
+          <p>{{ toDateString(scope.row.begin_time) }}</p>
+        </template>
+      </el-table-column>
+      <el-table-column label="结束时间" width="100">
+        <template v-slot="scope">
+          <p>{{ toDateString(scope.row.end_time) }}</p>
+        </template>
+      </el-table-column>
       <el-table-column label="操作" width="300">
         <template v-slot="scope">
           <el-row :gutter="10">
@@ -57,12 +72,9 @@
       </el-table-column>
     </el-table>
     <el-dialog v-model="centerDialogVisible" title="预约" width="30%" center>
-      <el-form ref="form" :model="form" label-width="120px">
-        <el-form-item label="车位">
-          <el-input v-model="form.parking_number" readonly></el-input>
-        </el-form-item>
+      <el-form ref="form" label-width="120px">
         <el-form-item label="车牌号">
-          <el-select v-model="form.car_number" :disabled="form.saved">
+          <el-select v-model="form.car_number">
             <template v-for="item in owner_cars">
               <el-option
                   :label="item.car_number"
@@ -71,22 +83,9 @@
             </template>
           </el-select>
         </el-form-item>
-        <el-form-item label="开始时间" style="width: 200px">
-          <el-input v-model="form.begin_time" readonly></el-input>
+        <el-form-item>
+          <el-button type="primary" @click="saveReservation">保存</el-button>
         </el-form-item>
-        <el-form-item label="结束时间" style="width: 200px">
-          <el-input v-model="form.end_time" readonly></el-input>
-        </el-form-item>
-        <template v-if="form.saved">
-          <el-form-item>
-            <el-button type="primary" @click="form.saved = false">修改</el-button>
-          </el-form-item>
-        </template>
-        <template v-else>
-          <el-form-item>
-            <el-button type="primary" @click="saveReservation">保存</el-button>
-          </el-form-item>
-        </template>
       </el-form>
     </el-dialog>
   </div>
@@ -115,6 +114,9 @@ export default {
       if (row.arrive_time != null)
         return new Date(row.arrive_time).toString().split(" ")[4];
       return "";
+    },
+    toDateString(date) {
+      return date.toTimeString().substring(0, 8);
     },
     editReservation(index, row) {
       if (row.used == 0) {
