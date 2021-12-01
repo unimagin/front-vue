@@ -5,10 +5,10 @@
       <el-col :span="4">
         <el-select v-model="floor_level" placeholder="选择楼层" :value="1">
           <el-option
-            v-for="index of 5"
-            :key="index"
-            :label="index"
-            :value="index"
+              v-for="index of 5"
+              :key="index"
+              :label="index"
+              :value="index"
           >
           </el-option>
         </el-select>
@@ -16,23 +16,23 @@
       <el-col :span="2"> 开始时间</el-col>
       <el-col :span="5">
         <el-time-select
-          v-model="begin_time"
-          placeholder="Start time"
-          start="07:00"
-          step="00:15"
-          end="22:30"
+            v-model="begin_time"
+            placeholder="Start time"
+            start="00:00"
+            step="00:15"
+            end="24:00"
         >
         </el-time-select>
       </el-col>
       <el-col :span="2"> 结束时间</el-col>
       <el-col :span="5">
         <el-time-select
-          v-model="end_time"
-          :min-time="begin_time"
-          placeholder="End time"
-          start="07:00"
-          step="00:15"
-          end="22:30"
+            v-model="end_time"
+            :min-time="begin_time"
+            placeholder="End time"
+            start="00:00"
+            step="00:15"
+            end="24:00"
         >
         </el-time-select>
       </el-col>
@@ -51,18 +51,18 @@
                   <div style="text-align: right; margin: 0">
                     <el-button size="mini" type="text">取消</el-button>
                     <el-button
-                      type="primary"
-                      size="mini"
-                      @click="
+                        type="primary"
+                        size="mini"
+                        @click="
                         goConfirm(parks[(row - 1) * cols + col].parking_number)
                       "
-                      >确定
+                    >确定
                     </el-button>
                   </div>
                   <template #reference>
                     <el-button
-                      :type="parks[(row - 1) * cols + col].status"
-                      class="choose_button"
+                        :type="parks[(row - 1) * cols + col].status"
+                        class="choose_button"
                     >
                       {{ parks[(row - 1) * cols + col].parking_number }}
                     </el-button>
@@ -93,7 +93,6 @@
         </el-tooltip>
       </div>
     </div>
-
     <el-dialog v-model="centerDialogVisible" title="预约" width="30%" center>
       <el-form ref="form" label-width="120px">
         <el-form-item label="车位">
@@ -103,30 +102,30 @@
           <el-select v-model="car" placeholder="请选择你的车辆">
             <template v-for="item in owner_cars">
               <el-option
-                :label="item.car_number"
-                :value="item.car_number"
+                  :label="item.car_number"
+                  :value="item.car_number"
               ></el-option>
             </template>
           </el-select>
         </el-form-item>
         <el-form-item label="预约时间">
           <el-time-select
-            v-model="begin_time"
-            placeholder="Start time"
-            disabled
-            start="00:00"
-            step="00:15"
-            end="24:00"
+              v-model="begin_time"
+              placeholder="Start time"
+              disabled
+              start="00:00"
+              step="00:15"
+              end="24:00"
           >
           </el-time-select>
           <el-time-select
-            v-model="end_time"
-            :min-time="begin_time"
-            placeholder="End time"
-            disabled
-            start="00:00"
-            step="00:15"
-            end="24:00"
+              v-model="end_time"
+              :min-time="begin_time"
+              placeholder="End time"
+              disabled
+              start="00:00"
+              step="00:15"
+              end="24:00"
           >
           </el-time-select>
         </el-form-item>
@@ -147,7 +146,7 @@ import axios from "axios";
 
 export default {
   name: "reservation",
-  created () {
+  created() {
     this.$showLoading("正在拼命加载");
     this.axios_search();
     const user = JSON.parse(localStorage.getItem("user"));
@@ -158,7 +157,7 @@ export default {
       this.$finishLoading();
     })
   },
-  data () {
+  data() {
     return {
       rows: 5,
       cols: 5,
@@ -174,7 +173,7 @@ export default {
     }
   },
   methods: {
-    search () {
+    search() {
       if (this.begin_time == "" || this.end_time == "") {
         this.$message.error("请输入时间")
       } else {
@@ -182,7 +181,7 @@ export default {
         this.axios_search();
       }
     },
-    goConfirm (park_number) {
+    goConfirm(park_number) {
       if (this.begin_time == "" || this.end_time == "") {
         this.$message.error("请输入时间")
       } else {
@@ -190,7 +189,7 @@ export default {
         this.centerDialogVisible = true;
       }
     },
-    goReservation () {
+    goReservation() {
       if (this.car == "") {
         this.$message.error("请输入预约车辆")
         return;
@@ -200,15 +199,13 @@ export default {
       this.$showLoading("正在预约");
       var myDate = new Date();
       var month = myDate.getFullYear().toString() + "-" + (myDate.getMonth() + 1).toString() + "-";
-      var date = (myDate.getDate()).toString() + "T";
-      console.log(month + date + this.begin_time + ":00")
-      console.log(date);
+      var appointDate = (myDate.getDate() + 1) < 10 ? '0' + (myDate.getDate() + 1).toString() : (myDate.getDate() + 1).toString()
+      var date = appointDate + "T";
       axios.post("/api/user/appoint", {
-        user: user,
         car_number: this.car,
         parking_number: this.choose_park_number,
-        begin_time: month + date + this.begin_time + ":00",
-        end_time: month + date + this.end_time + ":00"
+        begin_time: month + date + this.begin_time + "+08:00",
+        end_time: month + date + this.end_time + "+08:00"
       }).then(() => {
         this.$finishLoading();
         this.$message.success("预约成功")
@@ -217,13 +214,13 @@ export default {
         this.$message.error("预约失败")
       })
     },
-    async axios_search () {
+    async axios_search() {
       const res = await axios
-        .post("/api/user/reservation", {
-          floor_level: this.floor_level,
-          begin_time: this.begin_time,
-          end_time: this.end_time
-        });
+          .post("/api/user/reservation", {
+            floor_level: this.floor_level,
+            begin_time: this.begin_time,
+            end_time: this.end_time
+          });
       this.parks = res.data
       this.$finishLoading();
       this.finished = true;
@@ -288,6 +285,7 @@ export default {
   width: 400px;
   float: right;
 }
+
 .t1 {
   text-align: center;
   float: left;
@@ -324,11 +322,13 @@ export default {
   width: 120px;
   height: 50px;
 }
+
 .t2 .el-button {
   background: #8dc8f8;
   width: 120px;
   height: 50px;
 }
+
 .t3 .el-button {
   background: #f78c8a;
   width: 120px;
