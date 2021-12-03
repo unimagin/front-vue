@@ -1,8 +1,8 @@
 <template>
   <div>
     <span>金额：{{ this.balance }}</span>
-    <el-button @click="this.top_up = true">充值</el-button>
-    <div style="margin-top: 15px;margin-bottom:12px">卡组：</div>
+    <el-button @click="this.top_up = true">充值</el-button> 
+     <div style="margin-top: 15px;margin-bottom:12px;margin-left:30px">卡组：</div> 
     <el-collapse>
       <el-collapse-item title="已有卡组" name="1">
         <template v-for="i in Card.length" :key="i">
@@ -239,5 +239,8 @@ export default {
   margin-top: 20px;
   background-color: #a5d1fd;
   border-color: #a5d1fd;
+}
+.el-collapse{
+  width:600px;
 }
 </style>

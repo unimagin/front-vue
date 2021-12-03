@@ -156,5 +156,10 @@ export default {
 </script>
 
 <style scoped>
+:deep(.el-button){
+  margin-top: 40px;
+  margin-left:42%;
+  background-color: #a5d1fd;
 
+}
 </style>
