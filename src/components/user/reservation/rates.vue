@@ -13,6 +13,27 @@
         </div>
       </el-card>
     </template>
+    <el-card class="box-card" shadow="hover">
+      <div slot="header" class="clearfix">
+        <h2>开通VIP</h2>
+      </div>
+      <div class="text item">
+        每月只需{{ VIPMonth }}元（大优惠）
+      </div>
+      <el-button type="text" class="button" @click="showMessage=true">如何开通</el-button>
+    </el-card>
+    <el-card class="box-card" shadow="hover">
+      <div slot="header" class="clearfix">
+        <h2>开通合同用户</h2>
+      </div>
+      <div class="text item">
+        每月只需{{ ContractMonth }}元（大优惠）
+      </div>
+      <el-button type="text" class="button" @click="showMessage=true">如何开通</el-button>
+    </el-card>
+    <el-dialog v-model="showMessage">
+      前往个人中心->用户中心->点击未有卡->点击卡片即可购买
+    </el-dialog>
   </div>
 </template>
 
@@ -36,7 +57,10 @@ export default {
           label: "合同用户",
           normalPrice: 1.00,
           BreakPrice: 8.00,
-        }]
+        }],
+      VIPMonth: 120,
+      ContractMonth: 110,
+      showMessage: false
     }
   }
 }
