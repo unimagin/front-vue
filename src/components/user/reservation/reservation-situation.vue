@@ -1,9 +1,11 @@
 <template>
-  <div style="width: 100%;">
+  <div style="width: 100%">
     <el-table :data="tableData" stripe>
-      <el-table-column type="index"/>
+      <el-table-column type="index" />
       <el-table-column label="预约日期" width="160">
-        {{ date() }}
+        <template v-slot="scope">
+          {{ this.tableData[scope.$index].r_date }}
+        </template>
       </el-table-column>
       <el-table-column label="状态" width="100">
         <template v-slot="scope">
@@ -32,41 +34,36 @@
       <el-table-column label="操作" width="300">
         <template v-slot="scope">
           <el-row :gutter="10">
-            <el-col :span="5"
-            >
+            <el-col :span="5">
               <el-button
-                  size="mini"
-                  @click="editReservation(scope.$index, scope.row)"
-              >编辑
+                size="mini"
+                @click="editReservation(scope.$index, scope.row)"
+                >编辑
               </el-button>
             </el-col>
-            <el-col :span="6"
-            >
-              <el-button size="mini" @click="changeUsed(scope.$index, scope.row)"
-              >已到达
+            <el-col :span="6">
+              <el-button
+                size="mini"
+                @click="changeUsed(scope.$index, scope.row)"
+                >已到达
               </el-button>
             </el-col>
-            <el-col :span="6"
-            >
+            <el-col :span="6">
               <el-button
-                  :disabled="isFinished"
-                  size="mini"
-                  @click="finishReservation(scope.row)"
-              >已完成
+                :disabled="isFinished"
+                size="mini"
+                @click="finishReservation(scope.row)"
+                >已完成
               </el-button>
-            </el-col
-            >
-            <el-col :span="7"
-            >
+            </el-col>
+            <el-col :span="7">
               <el-button
-                  size="mini"
-                  type="danger"
-                  @click="cancelReservation(scope.row)"
-              >取消预约
-              </el-button
-              >
-            </el-col
-            >
+                size="mini"
+                type="danger"
+                @click="cancelReservation(scope.row)"
+                >取消预约
+              </el-button>
+            </el-col>
           </el-row>
         </template>
       </el-table-column>
@@ -77,8 +74,8 @@
           <el-select v-model="form.car_number">
             <template v-for="item in owner_cars">
               <el-option
-                  :label="item.car_number"
-                  :value="item.car_number"
+                :label="item.car_number"
+                :value="item.car_number"
               ></el-option>
             </template>
           </el-select>
@@ -93,8 +90,8 @@
 
 <script lang="ts">
 import axios from "axios";
-import {ElMessageBox, ElMessage} from "element-plus";
-import {InfoFilled} from "@element-plus/icons";
+import { ElMessageBox, ElMessage } from "element-plus";
+import { InfoFilled } from "@element-plus/icons";
 
 export default {
   data() {
@@ -107,9 +104,6 @@ export default {
     };
   },
   methods: {
-    date() {
-      return new Date().toLocaleDateString();
-    },
     time(row) {
       if (row.arrive_time != null)
         return new Date(row.arrive_time).toString().split(" ")[4];
@@ -134,20 +128,20 @@ export default {
       this.form.saved = true;
       this.centerDialogVisible = false;
       axios
-          .post("/api/user/reservation/modify_reservation", {
-            reservation_ID: this.form.reservation_ID,
-            car_number: this.form.car_number,
-          })
-          .then(() => {
-            this.tableData[this.form_index].car_number = this.form.car_number;
-            ElMessage({
-              type: "success",
-              message: "成功修改预约的车辆",
-            });
-          })
-          .catch((err) => {
-            console.log(err);
+        .post("/api/user/reservation/modify_reservation", {
+          reservation_ID: this.form.reservation_ID,
+          car_number: this.form.car_number,
+        })
+        .then(() => {
+          this.tableData[this.form_index].car_number = this.form.car_number;
+          ElMessage({
+            type: "success",
+            message: "成功修改预约的车辆",
           });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
     cancelReservation(row) {
       if (row.used == 0) {
@@ -160,22 +154,26 @@ export default {
           beforeClose: (action, instance, done) => {
             if (action === "confirm") {
               axios
-                  .post("/api/user/cancel_reservation", row)
-                  .then((resp) => {
-                    this.tableData = resp.data.reservations;
-                    for (var i = 0; i < this.tableData.length; i++) {
-                      this.tableData[i].begin_time = new Date(
-                          this.tableData[i].begin_time
-                      );
-                      this.tableData[i].end_time = new Date(
-                          this.tableData[i].end_time
-                      );
-                    }
-                    this.$message.success("取消预约成功");
-                  })
-                  .catch((err) => {
-                    console.log(err);
-                  });
+                .post("/api/user/cancel_reservation", row)
+                .then((resp) => {
+                  this.tableData = resp.data.reservations;
+                  for (var i = 0; i < this.tableData.length; i++) {
+                    this.tableData[i].begin_time = new Date(
+                      this.tableData[i].begin_time
+                    );
+                    this.tableData[i].end_time = new Date(
+                      this.tableData[i].end_time
+                    );
+                  }
+                  const user = JSON.parse(localStorage.getItem("user"));
+                  user.cancel += 1;
+                  localStorage.setItem("user", JSON.stringify(user));
+                  this.$store.commit("selfEdit", JSON.stringify(user));
+                  this.$message.success("取消预约成功");
+                })
+                .catch((err) => {
+                  console.log(err);
+                });
             }
             done();
           },
@@ -192,39 +190,43 @@ export default {
         const now = new Date();
         this.tableData[index].arrive_time = now;
         axios
-            .post("/api/user/reservation/change_used", {
-              reservation_ID: row.reservation_ID,
-              arrive_time: now,
-            })
-            .then((resp) => {
-              console.log(resp);
-            })
-            .catch((err) => {
-              console.log(err);
-            });
+          .post("/api/user/reservation/change_used", {
+            reservation_ID: row.reservation_ID,
+            arrive_time: now,
+          })
+          .then((resp) => {
+            console.log(resp);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       }
     },
     finishReservation(row) {
       if (row.used == 1) {
         axios
-            .post("/api/user/bill/generate_bill", row)
-            .then((resp) => {
-              console.log(resp.data.reservations);
-              this.tableData = resp.data.reservations;
-              for (var i = 0; i < this.tableData.length; i++) {
-                this.tableData[i].begin_time = new Date(
-                    this.tableData[i].begin_time
-                );
-                this.tableData[i].end_time = new Date(this.tableData[i].end_time);
-              }
-              ElMessage({
-                message: "预约已完成！",
-                type: "success",
-              });
-            })
-            .catch((err) => {
-              console.log(err);
+          .post("/api/user/bill/generate_bill", row)
+          .then((resp) => {
+            this.tableData = resp.data.reservations;
+            for (var i = 0; i < this.tableData.length; i++) {
+              this.tableData[i].begin_time = new Date(
+                this.tableData[i].begin_time
+              );
+              this.tableData[i].end_time = new Date(this.tableData[i].end_time);
+            }
+            const user = JSON.parse(localStorage.getItem("user"));
+            user.violation = resp.data.violation;
+            user.total += 1;
+            localStorage.setItem("user", JSON.stringify(user));
+            this.$store.commit("selfEdit", JSON.stringify(user));
+            ElMessage({
+              message: "预约已完成！",
+              type: "success",
             });
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       } else {
         ElMessageBox.alert("您仍未到达不可确认完成预约！", "Warning！", {
           confirmButtonText: "OK",
@@ -235,26 +237,26 @@ export default {
   created() {
     const user = JSON.parse(localStorage.getItem("user"));
     axios
-        .post("/api/user/look_reservation", user)
-        .then((resp) => {
-          this.tableData = resp.data.reservations;
-          for (var i = 0; i < this.tableData.length; i++) {
-            this.tableData[i].begin_time = new Date(this.tableData[i].begin_time);
-            this.tableData[i].end_time = new Date(this.tableData[i].end_time);
-          }
-          console.log(this.tableData)
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      .post("/api/user/look_reservation", user)
+      .then((resp) => {
+        this.tableData = resp.data.reservations;
+        for (var i = 0; i < this.tableData.length; i++) {
+          this.tableData[i].begin_time = new Date(this.tableData[i].begin_time);
+          this.tableData[i].end_time = new Date(this.tableData[i].end_time);
+        }
+        console.log(this.tableData);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
     axios
-        .post("/api/user/look_cars", user)
-        .then((resp) => {
-          this.owner_cars = resp.data;
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      .post("/api/user/look_cars", user)
+      .then((resp) => {
+        this.owner_cars = resp.data;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   },
 };
 </script>
