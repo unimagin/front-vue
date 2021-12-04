@@ -244,7 +244,6 @@ export default {
           this.tableData[i].begin_time = new Date(this.tableData[i].begin_time);
           this.tableData[i].end_time = new Date(this.tableData[i].end_time);
         }
-        console.log(this.tableData);
       })
       .catch((err) => {
         console.log(err);
