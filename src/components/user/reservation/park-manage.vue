@@ -6,7 +6,7 @@
         <el-button type="text" class="button" @click="BeforeRePark">点这里</el-button>
       </div>
     </el-card>
-    <el-card shadow="hover">
+    <el-card shadow="hover" style="margin-top: 20px">
       <div style="padding: 14px">
         <span>未预约停车</span>
         <el-button type="text" class="button" @click=" parkWithoutAppointDialog = true">点这里</el-button>

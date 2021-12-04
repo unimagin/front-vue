@@ -8,7 +8,7 @@
                 :src="user.imageUrl ? user.imageUrl:'https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png'"
                 class="image">
             <div style="padding: 25px;">
-              <span>USER</span>
+              <span :class="'type'+user.kind">{{ kinds[user.kind] }}</span>
               <div class="bottom clearfix">
               </div>
             </div>
@@ -50,7 +50,14 @@ export default defineComponent({
   name: "user",
   data() {
     return {
-      user: {}
+      user: {},
+      kinds: {
+        "0": "普通用户",
+        "1": "会员用户",
+        "2": "合同用户",
+        "3": "未预约用户",
+        "4": "黑名单用户",
+      }
     }
   },
   methods: {

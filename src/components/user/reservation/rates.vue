@@ -13,8 +13,8 @@
         </div>
       </el-card>
     </template>
-    <el-card class="box-card" shadow="hover" >
-      <div slot="header" class="clearfix" >
+    <el-card class="box-card" shadow="hover">
+      <div slot="header" class="clearfix">
         <h2>开通VIP</h2>
       </div>
       <div class="text item">
@@ -22,7 +22,7 @@
       </div>
       <el-button type="text" class="button" @click="showMessage=true">如何开通</el-button>
     </el-card>
-    <el-card class="box-card" shadow="hover" >
+    <el-card class="box-card" shadow="hover">
       <div slot="header" class="clearfix">
         <h2>开通合同用户</h2>
       </div>
@@ -32,15 +32,14 @@
       <el-button type="text" class="button" @click="showMessage=true">如何开通</el-button>
     </el-card>
     <el-dialog v-model="showMessage">
-      <!-- 前往个人中心->用户中心->点击未有卡->点击卡片即可购买 -->
 
       <el-steps :active="1">
-  <el-step title="步骤 1" description="前往个人中心"></el-step>
-  <el-step title="步骤 2" description="用户中心"></el-step>
-  <el-step title="步骤 3" status="process" description="点击未有卡"></el-step>
-  <el-step title="步骤 4" status="process" description="点击卡片即可购买"></el-step>
+        <el-step title="步骤 1" description="前往个人中心"></el-step>
+        <el-step title="步骤 2" description="用户中心"></el-step>
+        <el-step title="步骤 3" status="process" description="点击未有卡"></el-step>
+        <el-step title="步骤 4" status="process" description="点击卡片即可购买"></el-step>
 
-</el-steps>
+      </el-steps>
     </el-dialog>
   </div>
 </template>
@@ -99,8 +98,9 @@ export default {
   width: 480px;
   margin-bottom: 20px;
 }
-.el-card{
-  display:flex;
-  float:left;
+
+.el-card {
+  display: flex;
+  float: left;
 }
 </style>
