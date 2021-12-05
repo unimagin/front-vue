@@ -31,9 +31,6 @@
               <el-card class="box-card">
                 <template #header>
                   <div class="card-header">
-
-                    <!-- <el-button type="text" @click="dialogFormVisible = true">打开嵌套表单的 Dialog</el-button> -->
-
                     <span>{{ Card[i - 1].label }}特权</span>
                   </div>
                 </template>
@@ -60,14 +57,14 @@
     <el-dialog v-model="buyVIP" title="成为会员" width="30%" center>
       <el-form :model="vipForm">
         <el-form-item label="开通期限">
-          <el-input v-model="vipForm.time" autocomplete="off"></el-input>
+          <el-input v-model="vipForm.time" autocomplete="off" type="number"></el-input>
           个月
         </el-form-item>
         <el-form-item label="银行卡号">
           <el-input autocomplete="off" v-model="user.bank_number" readonly></el-input>
         </el-form-item>
         <el-form-item label="总金额为">
-          <el-input v-model="vipForm.money" autocomplete="off"></el-input>
+          <el-input v-model="ComputedViPMoney" autocomplete="off" readonly></el-input>
           元
         </el-form-item>
         <el-button type="primary" round @click="getVIP">确认开通</el-button>
@@ -76,14 +73,14 @@
     <el-dialog v-model="buyContract" title="成为合同用户" width="30%" center>
       <el-form :model="ContractForm">
         <el-form-item label="开通期限">
-          <el-input v-model="ContractForm.time" autocomplete="off"></el-input>
+          <el-input v-model="ContractForm.time" autocomplete="off" type="number"></el-input>
           个月
         </el-form-item>
         <el-form-item label="银行卡号">
-          <el-input readonly autocomplete="off" v-model="user.bank_number "></el-input>
+          <el-input readonly autocomplete="off" v-model="user.bank_number"></el-input>
         </el-form-item>
         <el-form-item label="预约车位">
-          <el-input placeholder="请输入预约的车位" v-model="ContractForm.parking_number" autocomplete="off">
+          <el-input placeholder="请输入预约的车位" v-model="ContractForm.parking_number" autocomplete="off" type="number">
           </el-input>
         </el-form-item>
         <el-form-item label="预约时间">
@@ -115,7 +112,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="总金额为">
-          <el-input v-model="ContractForm.money" autocomplete="off"></el-input>
+          <el-input v-model="ComputedContractMoney" autocomplete="off" readonly></el-input>
           元
         </el-form-item>
         <el-button type="primary" round>确认开通</el-button>
@@ -155,19 +152,31 @@ export default {
       buyVIP: false,
       buyContract: false,
       dialogFormVisible: false,
+      vipMoney: 110,
+      ContractMoney: 120,
       vipForm: {
-        time: '',
-        money: '',
+        time: 0,
+        money: 0,
       },
       ContractForm: {
-        time: '',
-        number: '',
-        money: '',
+        time: 0,
+        money: 0,
         begin_time: '07:00',
         end_time: '07:15',
         car: '',
         parking_number: '',
       },
+    }
+  },
+  computed: {
+    ComputedViPMoney() {
+      this.vipForm.money = this.vipForm.time * this.vipMoney;
+      return this.vipForm.money
+
+    },
+    ComputedContractMoney() {
+      this.ContractForm.money = this.ContractForm.time * this.ContractMoney;
+      return this.ContractForm.money
     }
   },
   methods: {
@@ -195,6 +204,21 @@ export default {
     },
     getVIP() {
       this.buyVIP = false;
+      this.$showLoading("正在处理")
+      axios.post('/api/user/buy_VIP', {
+        time: this.vipForm.time,
+        money: this.vipForm.money
+      }).then(res => {
+        this.user.kind = res.data.kind;
+        this.user.balance = res.data.balance
+        localStorage.setItem('user', JSON.stringify(this.user))
+        this.$finishLoading()
+        location.reload();
+        this.$message.success("处理成功")
+      }).catch(error => {
+        this.$finishLoading()
+        this.$message.error("余额不足")
+      })
     },
     getContract() {
 
@@ -204,6 +228,12 @@ export default {
     const user = JSON.parse(localStorage.getItem("user"));
     this.balance = user.balance
     this.user = user;
+    if (user.kind == 1) {
+      this.ownCard[0] = true;
+    }
+    if (user.kind == 2) {
+      this.ownCard[1] = true;
+    }
     axios.post("/api/user/look_cars", {
       user: user,
     }).then((res) => {
@@ -240,7 +270,8 @@ export default {
   background-color: #a5d1fd;
   border-color: #a5d1fd;
 }
-.el-collapse{
-  width:600px;
+
+.el-collapse {
+  width: 600px;
 }
 </style>
