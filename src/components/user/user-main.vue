@@ -3,7 +3,7 @@
     <el-container>
       <el-aside>
         <el-col :span="18">
-          <el-card :body-style="{ padding: '65px'}">
+          <el-card :body-style="{ padding: '50px'}">
             <img
                 :src="user.imageUrl ? user.imageUrl:'https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png'"
                 class="image">
@@ -106,7 +106,7 @@ export default defineComponent({
 }
 
 .image {
-  width: 120%;
+  width: 100%;
   height: 120px;
   border-radius: 50%;
   display: block;

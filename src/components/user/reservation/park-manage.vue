@@ -1,15 +1,15 @@
 <template>
   <div>
-    <el-card shadow="hover">
+    <el-card shadow="hover;" style="width:60%;">
       <div style="padding: 14px">
-        <span>车位被占用</span>
-        <el-button type="text" class="button" @click="BeforeRePark">点这里</el-button>
+        <h1>车位被占用</h1>
+        <el-button type="text" class="button" @click="BeforeRePark">查看详情</el-button>
       </div>
     </el-card>
-    <el-card shadow="hover" style="margin-top: 20px">
+    <el-card shadow="hover" style="margin-top: 20px;width:60%;">
       <div style="padding: 14px">
-        <span>未预约停车</span>
-        <el-button type="text" class="button" @click=" parkWithoutAppointDialog = true">点这里</el-button>
+        <h1>未预约停车</h1>
+        <el-button type="text" class="button" @click=" parkWithoutAppointDialog = true">查看详情</el-button>
       </div>
     </el-card>
     <el-dialog v-model="parkWithoutAppointDialog" title="未预约停车" width="30%" center>
@@ -159,7 +159,7 @@ export default {
 :deep(.el-button){
   margin-top: 40px;
   margin-left:42%;
-  background-color: #a5d1fd;
+  /* background-color: #a5d1fd; */
 
 }
 </style>
