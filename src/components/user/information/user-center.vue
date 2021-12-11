@@ -57,7 +57,7 @@
     <el-dialog v-model="buyVIP" title="成为会员" width="30%" center>
       <el-form :model="vipForm">
         <el-form-item label="开通期限">
-          <el-input v-model="vipForm.time" autocomplete="off" type="number"></el-input>
+          <el-input v-model="vipForm.time" autocomplete="off" type="number" min="1"></el-input>
           个月
         </el-form-item>
         <el-form-item label="银行卡号">
@@ -73,7 +73,7 @@
     <el-dialog v-model="buyContract" title="成为合同用户" width="30%" center>
       <el-form :model="ContractForm">
         <el-form-item label="开通期限">
-          <el-input v-model="ContractForm.time" autocomplete="off" type="number"></el-input>
+          <el-input v-model="ContractForm.time" autocomplete="off" type="number" min="1"></el-input>
           个月
         </el-form-item>
         <el-form-item label="银行卡号">
@@ -155,11 +155,11 @@ export default {
       vipMoney: 110,
       ContractMoney: 120,
       vipForm: {
-        time: 0,
+        time: 1,
         money: 0,
       },
       ContractForm: {
-        time: 0,
+        time: 1,
         money: 0,
         begin_time: '07:00',
         end_time: '07:15',
