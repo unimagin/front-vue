@@ -195,7 +195,6 @@ export default {
             arrive_time: now,
           })
           .then((resp) => {
-            console.log(resp);
           })
           .catch((err) => {
             console.log(err);

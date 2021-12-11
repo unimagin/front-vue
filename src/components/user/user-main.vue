@@ -62,7 +62,6 @@ export default defineComponent({
   },
   methods: {
     loginOut() {
-      console.log("hhhh");
       this.$store
           .dispatch("LogOut")
           .then(() => {
@@ -82,7 +81,7 @@ export default defineComponent({
 });
 </script>
 
-<style>
+<style scoped>
 * {
   margin: 0;
   padding: 0;

@@ -195,7 +195,6 @@ export default {
           })
     },
     buyCard(cardIndex) {
-      console.log(cardIndex)
       if (cardIndex == 1) {
         this.buyVIP = true;
       } else {

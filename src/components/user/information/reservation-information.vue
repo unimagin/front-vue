@@ -81,7 +81,6 @@ export default {
   },
   methods: {
     rowStyle({ row, rowIndex }) {
-      console.log(rowIndex);
       if (row.status == 2) {
         return " background-color: #f4f4f5;";
       } else if (row.status == 0) {
@@ -155,7 +154,6 @@ export default {
           this.total_bills[i] = resp.data.bills.slice(i * 15, (i + 1) * 15);
         }
         this.bills = this.total_bills[0];
-        console.log(this.bills);
       })
       .catch((err) => {
         console.log(err);

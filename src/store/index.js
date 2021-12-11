@@ -23,7 +23,6 @@ const store = createStore({
     actions: {
         Login ({ commit }, { params, checkList }) {
             return new Promise((resolve, reject) => {
-                console.log(params);
                 // 向后端发送请求，验证用户名密码是否正确，请求成功接收后端返回的token值，利用commit修改store的state属性，并将token存放在localStorage中
                 axios.post('/api/login', params)
                     .then(resp => {

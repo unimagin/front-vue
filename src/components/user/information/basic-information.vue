@@ -93,7 +93,6 @@ export default {
           this.$showLoading("正在保存")
           this.$store.dispatch("SaveEdit", this.user)
               .then((res) => {
-                console.log(res)
                 this.$finishLoading();
                 this.$message.success("保存成功！");
                 this.isSaved = true
@@ -123,7 +122,6 @@ export default {
             this.$message.error("图片上传失败");
           })
       this.user.imageUrl = res.data.user.imageUrl
-      console.log(this.user)
       localStorage.setItem('user', JSON.stringify(this.user))
       this.$finishLoading()
       location.reload();
