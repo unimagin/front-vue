@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="margin-top: -30px">
     <span>金额：{{ this.balance }}</span>
     <el-button @click="this.top_up = true">充值</el-button>
     <div style="margin-top: 15px;margin-bottom:12px;margin-left:30px">卡组：</div>

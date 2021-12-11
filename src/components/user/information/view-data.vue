@@ -1,5 +1,5 @@
 <template>
-  <div id="view-data-echarts" style="width: 801px;height: 534px;">
+  <div id="view-data-echarts" style="width: 801px;height: 534px;margin-top: -50px">
 <!--    这是给用户查看预约记录的echarts数据-->
 <!--    <br>-->
 <!--    1. 违约情况-->

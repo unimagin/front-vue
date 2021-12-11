@@ -45,7 +45,7 @@
       </el-form>
       <el-button type="primary" round>提交</el-button>
     </el-dialog>
-    <el-dialog v-model="reParkDialog" title="车位占用反馈" width="45%" center>
+    <el-dialog v-model="reParkDialog" title="车位占用反馈" width="48%" center>
       <el-table :data="tableData" stripe
                 ref="multipleTable"
                 @selection-change="handleSelectionChange"
@@ -54,7 +54,9 @@
       >
         <el-table-column type="selection" width="55"/>
         <el-table-column label="预约日期" width="160">
-          {{ date() }}
+          <template v-slot="scope">
+            <p>{{ scope.row.r_date }}</p>
+          </template>
         </el-table-column>
         <el-table-column label="车位" width="100">
           <template v-slot="scope">
@@ -102,9 +104,6 @@ export default {
     }
   },
   methods: {
-    date() {
-      return new Date().toLocaleDateString();
-    },
     toDateString(date) {
       return date.toTimeString().substring(0, 8);
     },
