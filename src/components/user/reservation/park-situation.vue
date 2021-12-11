@@ -40,13 +40,14 @@
         <el-button type="primary" round @click="search">查询</el-button>
       </el-col>
     </el-row>
-    <el-row style="margin-left: 60px; margin-top: 80px">
+    <el-row style="margin-left: 60px; margin-top: 30px">
       <template v-if="finished">
         <template v-for="row in rows">
           <div class="row" direction="vertical">
             <template v-for="col in cols">
               <div class="col" direction="horizontal">
                 <el-popover placement="top-start" :width="200" trigger="hover">
+                  <p><span>当前预约人数：{{ parks[(row - 1) * cols + col].reservation_num }}</span></p>
                   <p>是否预约此位置</p>
                   <div style="text-align: right; margin: 0">
                     <el-button size="mini" type="text">取消</el-button>
@@ -60,12 +61,11 @@
                     </el-button>
                   </div>
                   <template #reference>
-                    <el-button
-                        :type="parks[(row - 1) * cols + col].status"
-                        class="choose_button"
-                    >
-                      {{ parks[(row - 1) * cols + col].parking_number }}
-                    </el-button>
+                    <div
+                        :id="'el-button--'+parkState(parks[(row - 1) * cols + col].reservation_num)"
+                        class="choose_button">
+                      <span>{{ parks[(row - 1) * cols + col].parking_number }}</span>
+                    </div>
                   </template>
                 </el-popover>
               </div>
@@ -173,6 +173,14 @@ export default {
     }
   },
   methods: {
+    parkState(reservation_num) {
+      let num = parseInt(reservation_num);
+      if (num == 0) {
+        return 1;
+      } else if (num < 3) {
+        return 2;
+      } else return 3;
+    },
     search() {
       if (this.begin_time == "" || this.end_time == "") {
         this.$message.error("请输入时间")
@@ -227,6 +235,7 @@ export default {
             end_time: this.end_time
           });
       this.parks = res.data
+      console.log(this.parks)
       this.$finishLoading();
       this.finished = true;
     },
@@ -260,19 +269,22 @@ export default {
 }
 
 .choose_button {
+  width: 20px;
+  height: 20px;
   border-radius: 50%;
   padding: 20px 20px;
+  text-align: center;
 }
 
-.el-button--1 {
+#el-button--1 {
   background-color: #ade2af;
 }
 
-.el-button--2 {
+#el-button--2 {
   background-color: #8dc8f8;
 }
 
-.el-button--3 {
+#el-button--3 {
   background-color: #f78c8a;
 }
 
