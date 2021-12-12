@@ -3,12 +3,13 @@
     <el-container>
       <el-aside>
         <el-col :span="18">
-          <el-card :body-style="{ padding: '50px'}">
+          <el-card :body-style="{ padding: '45px'}">
             <img
                 :src="user.imageUrl ? user.imageUrl:'https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png'"
                 class="image">
             <div style="padding: 25px;">
               <span :class="'type'+user.kind">{{ kinds[user.kind] }}</span>
+              
               <div class="bottom clearfix">
               </div>
             </div>
@@ -106,7 +107,7 @@ export default defineComponent({
 
 .image {
   width: 100%;
-  height: 120px;
+  height: 130px;
   border-radius: 50%;
   display: block;
 }
