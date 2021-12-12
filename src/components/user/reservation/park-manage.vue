@@ -43,7 +43,7 @@
           </el-select>
         </el-form-item>
       </el-form>
-      <el-button type="primary" round>提交</el-button>
+      <el-button type="primary" @click="parkWithoutAppoint" round>提交</el-button>
     </el-dialog>
     <el-dialog v-model="reParkDialog" title="车位占用反馈" width="48%" center>
       <el-table :data="tableData" stripe
@@ -79,7 +79,7 @@
           </template>
         </el-table-column>
       </el-table>
-      <el-button round type="primary">反馈</el-button>
+      <el-button round type="primary" @click="parkFeedback">反馈</el-button>
     </el-dialog>
   </div>
 </template>
@@ -122,6 +122,47 @@ export default {
       this.$refs.multipleTable.toggleRowSelection(row)
       this.selectChange(this.handleSelectionList)
     },
+    parkFeedback() {
+      this.$showLoading("正在处理")
+      const reservation_ID = this.handleSelectionList[0].reservation_ID;
+      axios.post('/api/user/park/repark', {
+        reservation_ID: reservation_ID
+      }).then(res => {
+        this.$finishLoading()
+        this.$message.success("反馈成功,已经为你重新分配了" + res.data.parking_number + "号车位")
+        this.reParkDialog = false;
+      }).catch(error => {
+        this.$finishLoading()
+        this.$message.error("反馈失败")
+        this.reParkDialog = false;
+      })
+    },
+    parkWithoutAppoint() {
+      if (this.reParkForm.begin_time == '' || this.reParkForm.end_time == '' || this.reParkForm.car == '') {
+        this.$message.error("请输入内容")
+        return
+      }
+      this.$showLoading("正在处理");
+      var myDate = new Date();
+      var month = myDate.getFullYear().toString() + "-" + ((myDate.getMonth() + 1) < 10 ? '0' + (myDate.getMonth() + 1).toString() : (myDate.getMonth() + 1).toString()) + "-";
+      var appointDate = myDate.getDate() < 10 ? '0' + myDate.getDate().toString() : myDate.getDate().toString()
+      var date = appointDate + "T";
+      axios.post("/api/user/park/parkWithoutAppoint", {
+        car_number: this.reParkForm.car,
+        begin_time: month + date + this.reParkForm.begin_time + "+08:00",
+        end_time: month + date + this.reParkForm.end_time + "+08:00",
+      }).then((res) => {
+        this.$finishLoading();
+        this.parkWithoutAppointDialog = false
+        this.$message.success("处理成功,已经为你分配了" + res.data.parking_number + "号车位")
+      }).catch((err) => {
+        console.log(err)
+        this.$finishLoading();
+        this.parkWithoutAppointDialog = false
+        this.$message.error("处理失败")
+      })
+
+    },
     BeforeRePark() {
       const user = JSON.parse(localStorage.getItem("user"));
       axios
@@ -155,9 +196,9 @@ export default {
 </script>
 
 <style scoped>
-:deep(.el-button){
+:deep(.el-button) {
   margin-top: 40px;
-  margin-left:42%;
+  margin-left: 42%;
   /* background-color: #a5d1fd; */
 
 }
