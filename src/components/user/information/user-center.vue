@@ -220,7 +220,14 @@ export default {
       })
     },
     getContract() {
-
+     /* axios.post('/api/user/buy_contract', {
+        time: this.ContractForm.time,//时间期限 int
+        begin_time: this.ContractForm.begin_time,//每天自动预约的开始时间
+        end_time: this.ContractForm.end_time,//每天自动预约的结束时间
+        parking_number: this.ContractForm.parking_number,
+        car_number: this.ContractForm.car,
+        money: this.ContractForm.money
+      })*/
     },
   },
   created() {

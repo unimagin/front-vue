@@ -40,55 +40,51 @@
         <el-button type="primary" round @click="search">查询</el-button>
       </el-col>
     </el-row>
-    <el-row style="margin-left: 60px; margin-top: 30px">
-      <template v-if="finished">
-        <template v-for="row in rows">
-          <div class="row" direction="vertical">
-            <template v-for="col in cols">
-              <div class="col" direction="horizontal">
-                <el-popover placement="top-start" :width="200" trigger="hover">
-                  <p><span>当前预约人数：{{ parks[(row - 1) * cols + col].reservation_num }}</span></p>
-                  <p>是否预约此位置</p>
-                  <div style="text-align: right; margin: 0">
-                    <el-button size="mini" type="text">取消</el-button>
-                    <el-button
-                        type="primary"
-                        size="mini"
-                        @click="
-                        goConfirm(parks[(row - 1) * cols + col].parking_number)
-                      "
-                    >确定
-                    </el-button>
+    <el-row class="park-main">
+      <el-col :span="24">
+        <el-col :span="24">
+          <ul class="ul">
+            <li class="li" v-for="item in parks" :key="item.parking_number">
+              <el-popover placement="top-start" :width="200" trigger="hover">
+                <p><span>当前预约人数：{{ item.reservation_num }}</span></p>
+                <p>是否预约此位置</p>
+                <div style="text-align: right; margin: 0">
+                  <el-button size="mini" type="text">取消</el-button>
+                  <el-button
+                      type="primary"
+                      size="mini"
+                      @click="goConfirm(item.parking_number)">
+                    确定
+                  </el-button>
+                </div>
+                <template #reference>
+                  <div
+                      :id="'el-button--'+parkState(item.reservation_num)"
+                      class="choose_button">
+                    <span>{{ item.parking_number }}</span>
                   </div>
-                  <template #reference>
-                    <div
-                        :id="'el-button--'+parkState(parks[(row - 1) * cols + col].reservation_num)"
-                        class="choose_button">
-                      <span>{{ parks[(row - 1) * cols + col].parking_number }}</span>
-                    </div>
-                  </template>
-                </el-popover>
-              </div>
-            </template>
-          </div>
-        </template>
-      </template>
+                </template>
+              </el-popover>
+            </li>
+          </ul>
+        </el-col>
+      </el-col>
     </el-row>
     <div class="box" style="display: flex">
       <div class="t1">
-        <el-tooltip class="item" effect="dark">
+        <el-tooltip class="item" effect="light">
           <el-button>空闲车位</el-button>
         </el-tooltip>
       </div>
 
       <div class="t2">
-        <el-tooltip class="item" effect="dark">
+        <el-tooltip class="item" effect="light">
           <el-button>半空闲车位</el-button>
         </el-tooltip>
       </div>
 
       <div class="t3">
-        <el-tooltip class="item" effect="dark">
+        <el-tooltip class="item" effect="light">
           <el-button>占用车位</el-button>
         </el-tooltip>
       </div>
@@ -235,6 +231,7 @@ export default {
             end_time: this.end_time
           });
       this.parks = res.data
+      console.log(this.parks)
       this.$finishLoading();
       this.finished = true;
     },
@@ -243,36 +240,41 @@ export default {
 </script>
 
 <style scoped>
-.el-main {
-  width: 600px;
-  height: 400px;
-  margin-top: 40px;
-}
-
-.row {
-  height: 70px;
-  width: 100%;
-  margin-bottom: 20px;
-}
-
-.col {
-  float: left;
-  height: 50px;
-  width: 50px;
-  margin-left: 40px;
-}
-
-.el-popover {
-  width: 100%;
+.park-main {
+  width: 40%;
   height: 100%;
+  display: flex;
+  margin-left: 20px;
+  align-items: center;
 }
+
+.ul {
+  width: 100%;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  margin: auto;
+}
+
+.li {
+  width: 80px;
+  height: 80px;
+  display: flex;
+  margin: auto;
+  text-align: center;
+  flex-direction: column;
+  overflow: hidden;
+}
+
 
 .choose_button {
-  width: 20px;
-  height: 20px;
+  width: 25px;
+  height: 25px;
   border-radius: 50%;
   padding: 20px 20px;
   text-align: center;
+  margin: auto;
 }
 
 #el-button--1 {
@@ -287,18 +289,12 @@ export default {
   background-color: #f78c8a;
 }
 
-.list {
-  padding: 0 !important;
-  background-color: #ecf5ff;
-  text-align: center;
-  font-size: medium !important;
-}
 
 .box {
+  width: 50%;
   display: flex;
   margin-top: -400px;
-  margin-left: 300px;
-  width: 400px;
+  margin-left: 80px;
   float: right;
 }
 
