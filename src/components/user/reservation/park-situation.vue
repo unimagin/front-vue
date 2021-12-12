@@ -231,7 +231,6 @@ export default {
             end_time: this.end_time
           });
       this.parks = res.data
-      console.log(this.parks)
       this.$finishLoading();
       this.finished = true;
     },
