@@ -107,6 +107,7 @@ export default defineComponent({
   mounted() {
     this.timer = setInterval(() => {
       const now = new Date();
+      console.log(now);
       for (var i = 0; i < this.reservations.length; i++) {
         const reservation = this.reservations[i];
         //5分钟前提醒到达
@@ -114,6 +115,8 @@ export default defineComponent({
           reservation.begin_time - now < 5 * 60 * 1000 &&
           reservation.msg_begin == 0
         ) {
+          console.log("here", reservation.msg_begin);
+          this.reservations[i].msg_begin = 1;
           axios
             .post("/api/user/add_message", {
               reservation: reservation,
@@ -124,7 +127,6 @@ export default defineComponent({
               var unreadNum = parseInt(localStorage.getItem("unreadNum"));
               unreadNum += 1;
               localStorage.setItem("unreadNum", String(unreadNum));
-              this.reservation[i].msg_begin = 1;
             })
             .catch((err) => {
               console.log(err);
@@ -135,6 +137,7 @@ export default defineComponent({
           reservation.end_time - now < 5 * 60 * 1000 &&
           reservation.msg_end == 0
         ) {
+          this.reservations[i].msg_end = 1;
           axios
             .post("/api/user/add_message", {
               reservation: reservation,
@@ -145,7 +148,6 @@ export default defineComponent({
               var unreadNum = parseInt(localStorage.getItem("unreadNum"));
               unreadNum += 1;
               localStorage.setItem("unreadNum", String(unreadNum));
-              this.reservation[i].msg_end = 1;
             })
             .catch((err) => {
               console.log(err);
@@ -222,7 +224,7 @@ export default defineComponent({
 .notice-num > p {
   width: 100%;
   height: 100%;
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  font-family: "Avenir", Helvetica, Arial, sans-serif;
   font-size: small;
   position: absolute;
   margin: auto;
