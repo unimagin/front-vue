@@ -3,21 +3,32 @@
     <el-container>
       <el-aside>
         <el-col :span="18">
-          <el-card :body-style="{ padding: '45px'}">
+          <el-card :body-style="{ padding: '45px' }">
             <img
+<<<<<<< HEAD
+              :src="
+                user.imageUrl
+                  ? user.imageUrl
+                  : 'https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png'
+              "
+              class="image"
+            />
+            <div style="padding: 25px">
+              <span :class="'type' + user.kind">{{ kinds[user.kind] }}</span>
+
+              <div class="bottom clearfix"></div>
+=======
                 :src="user.imageUrl ? user.imageUrl:'https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png'"
                 class="image">
             <div style="padding: 25px;">
               <span :class="'type'+user.kind">{{ kinds[user.kind] }}</span>
-              
+
               <div class="bottom clearfix">
               </div>
+>>>>>>> 7fcdb65dc13abf6a35a096f180b94c64a4644e9a
             </div>
           </el-card>
-          <el-menu
-              class="el-menu-vertical-demo"
-              router
-          >
+          <el-menu class="el-menu-vertical-demo" router>
             <el-menu-item index="/user/self-information">
               <i class="el-icon-location"></i>
               <span slot="title">个人中心</span>
@@ -28,6 +39,13 @@
             </el-menu-item>
             <el-menu-item index="/user/notice">
               <i class="el-icon-message-solid"></i>
+              <div class="notice-num">
+<<<<<<< HEAD
+                <p>{{ unreadNum }}</p>
+=======
+                <p>{{ noticeNum }}</p>
+>>>>>>> 7fcdb65dc13abf6a35a096f180b94c64a4644e9a
+              </div>
               <span slot="title" class="notice">消息中心</span>
             </el-menu-item>
             <el-menu-item index="/main" @click="loginOut">
@@ -45,7 +63,8 @@
 </template>
 
 <script lang="ts">
-import {defineComponent} from "vue";
+import { defineComponent } from "vue";
+import axios from "axios";
 
 export default defineComponent({
   name: "user",
@@ -58,27 +77,105 @@ export default defineComponent({
         "2": "合同用户",
         "3": "未预约用户",
         "4": "黑名单用户",
-      }
+      },
+<<<<<<< HEAD
+      unreadNum: -1,
+      reservations: [],
+      timer: null,
+    };
+=======
+      noticeNum: 99
     }
+>>>>>>> 7fcdb65dc13abf6a35a096f180b94c64a4644e9a
   },
   methods: {
     loginOut() {
       this.$store
-          .dispatch("LogOut")
-          .then(() => {
-            this.$message.success("注销成功！");
-            this.$router.push({
-              path: "/login",
-            });
-          })
-          .catch((error) => {
-            this.$message.error("注销失败！");
+        .dispatch("LogOut")
+        .then(() => {
+          this.$message.success("注销成功！");
+          this.$router.push({
+            path: "/login",
           });
+        })
+        .catch((error) => {
+          this.$message.error("注销失败！");
+        });
     },
   },
   beforeMount() {
-    this.user = JSON.parse(localStorage.getItem('user'));
-  }
+    this.user = JSON.parse(localStorage.getItem("user"));
+    this.unreadNum = localStorage.getItem("unreadNum");
+    axios
+      .post("/api/user/look_reservation", this.user)
+      .then((resp) => {
+        this.reservations = resp.data.reservations;
+        for (var i = 0; i < this.reservations.length; i++) {
+          this.reservations[i].begin_time = new Date(
+            this.reservations[i].begin_time
+          );
+          this.reservations[i].end_time = new Date(
+            this.reservations[i].end_time
+          );
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  },
+  mounted() {
+    this.timer = setInterval(() => {
+      const now = new Date();
+      for (var i = 0; i < this.reservations.length; i++) {
+        const reservation = this.reservations[i];
+        //5分钟前提醒到达
+        if (
+          reservation.begin_time - now < 5 * 60 * 1000 &&
+          reservation.msg_begin == 0
+        ) {
+          axios
+            .post("/api/user/add_message", {
+              reservation: reservation,
+              type: 0,
+              time: now,
+            })
+            .then(() => {
+              var unreadNum = parseInt(localStorage.getItem("unreadNum"));
+              unreadNum += 1;
+              localStorage.setItem("unreadNum", String(unreadNum));
+              this.reservation[i].msg_begin = 1;
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        }
+        //5分钟前提醒离开
+        if (
+          reservation.end_time - now < 5 * 60 * 1000 &&
+          reservation.msg_end == 0
+        ) {
+          axios
+            .post("/api/user/add_message", {
+              reservation: reservation,
+              type: 1,
+              time: now,
+            })
+            .then(() => {
+              var unreadNum = parseInt(localStorage.getItem("unreadNum"));
+              unreadNum += 1;
+              localStorage.setItem("unreadNum", String(unreadNum));
+              this.reservation[i].msg_end = 1;
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        }
+      }
+    }, 60 * 1000);
+  },
+  beforeDestroy() {
+    clearInterval(this.timer);
+  },
 });
 </script>
 
@@ -121,7 +218,6 @@ export default defineComponent({
   float: right;
 }
 
-
 .clearfix:before,
 .clearfix:after {
   display: table;
@@ -129,16 +225,38 @@ export default defineComponent({
 }
 
 .clearfix:after {
-  clear: both
+  clear: both;
 }
 
-.notice::before {
-  content: " ";
-  border: 3px solid red; /*设置红色*/
-  border-radius: 3px; /*设置圆角*/
+.notice-num {
+  width: 18px;
+  height: 16px;
+  border-radius: 7px; /*设置圆角*/
+  margin-left: 110px;
+  margin-top: -45px;
+  position: absolute;
+  text-align: center;
+  background-color: rgba(245, 40, 40, 0.8);
+}
+<<<<<<< HEAD
+.notice-num > p {
+  width: 100%;
+  height: 100%;
+  font-family: "Avenir", Helvetica, Arial, sans-serif;
+  font-size: small;
   position: absolute;
   margin-left: 70px;
   margin-top: 15px;
-}
+=======
 
+.notice-num > p {
+  width: 100%;
+  height: 100%;
+  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  font-size: small;
+  position: absolute;
+>>>>>>> 7fcdb65dc13abf6a35a096f180b94c64a4644e9a
+  margin: auto;
+  margin-top: -20px;
+}
 </style>

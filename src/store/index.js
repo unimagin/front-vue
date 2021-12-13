@@ -5,7 +5,8 @@ import axios from 'axios';
 const store = createStore({
     state: {
         token: localStorage.getItem('token'),
-        user: localStorage.getItem('user')
+        user: localStorage.getItem('user'),
+        unreadNum: localStorage.getItem('unreadNum')
     },
     mutations: {
         auth_success (state, { token, user }) {
@@ -39,6 +40,13 @@ const store = createStore({
                         }
                         localStorage.setItem('token', token.toString())
                         localStorage.setItem('user', JSON.stringify(user))
+                        axios.post('/api/user/get_unreadnum', {})
+                            .then(resp => {
+                                localStorage.setItem('unreadNum', resp.data.unreadNum)
+                            })
+                            .catch(err => {
+                                console.log(err)
+                            })
                         // 更新token
                         commit('auth_success', {
                             token: token,
