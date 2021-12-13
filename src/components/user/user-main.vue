@@ -5,7 +5,6 @@
         <el-col :span="18">
           <el-card :body-style="{ padding: '45px' }">
             <img
-<<<<<<< HEAD
               :src="
                 user.imageUrl
                   ? user.imageUrl
@@ -17,15 +16,6 @@
               <span :class="'type' + user.kind">{{ kinds[user.kind] }}</span>
 
               <div class="bottom clearfix"></div>
-=======
-                :src="user.imageUrl ? user.imageUrl:'https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png'"
-                class="image">
-            <div style="padding: 25px;">
-              <span :class="'type'+user.kind">{{ kinds[user.kind] }}</span>
-
-              <div class="bottom clearfix">
-              </div>
->>>>>>> 7fcdb65dc13abf6a35a096f180b94c64a4644e9a
             </div>
           </el-card>
           <el-menu class="el-menu-vertical-demo" router>
@@ -40,11 +30,7 @@
             <el-menu-item index="/user/notice">
               <i class="el-icon-message-solid"></i>
               <div class="notice-num">
-<<<<<<< HEAD
                 <p>{{ unreadNum }}</p>
-=======
-                <p>{{ noticeNum }}</p>
->>>>>>> 7fcdb65dc13abf6a35a096f180b94c64a4644e9a
               </div>
               <span slot="title" class="notice">消息中心</span>
             </el-menu-item>
@@ -78,15 +64,10 @@ export default defineComponent({
         "3": "未预约用户",
         "4": "黑名单用户",
       },
-<<<<<<< HEAD
       unreadNum: -1,
       reservations: [],
       timer: null,
     };
-=======
-      noticeNum: 99
-    }
->>>>>>> 7fcdb65dc13abf6a35a096f180b94c64a4644e9a
   },
   methods: {
     loginOut() {
@@ -238,24 +219,12 @@ export default defineComponent({
   text-align: center;
   background-color: rgba(245, 40, 40, 0.8);
 }
-<<<<<<< HEAD
-.notice-num > p {
-  width: 100%;
-  height: 100%;
-  font-family: "Avenir", Helvetica, Arial, sans-serif;
-  font-size: small;
-  position: absolute;
-  margin-left: 70px;
-  margin-top: 15px;
-=======
-
 .notice-num > p {
   width: 100%;
   height: 100%;
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   font-size: small;
   position: absolute;
->>>>>>> 7fcdb65dc13abf6a35a096f180b94c64a4644e9a
   margin: auto;
   margin-top: -20px;
 }
