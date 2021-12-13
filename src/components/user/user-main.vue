@@ -9,7 +9,7 @@
                 class="image">
             <div style="padding: 25px;">
               <span :class="'type'+user.kind">{{ kinds[user.kind] }}</span>
-              
+
               <div class="bottom clearfix">
               </div>
             </div>
@@ -28,6 +28,9 @@
             </el-menu-item>
             <el-menu-item index="/user/notice">
               <i class="el-icon-message-solid"></i>
+              <div class="notice-num">
+                <p>{{ noticeNum }}</p>
+              </div>
               <span slot="title" class="notice">消息中心</span>
             </el-menu-item>
             <el-menu-item index="/main" @click="loginOut">
@@ -58,7 +61,8 @@ export default defineComponent({
         "2": "合同用户",
         "3": "未预约用户",
         "4": "黑名单用户",
-      }
+      },
+      noticeNum: 99
     }
   },
   methods: {
@@ -132,13 +136,25 @@ export default defineComponent({
   clear: both
 }
 
-.notice::before {
-  content: " ";
-  border: 3px solid red; /*设置红色*/
-  border-radius: 3px; /*设置圆角*/
+.notice-num {
+  width: 18px;
+  height: 16px;
+  border-radius: 7px; /*设置圆角*/
+  margin-left: 110px;
+  margin-top: -45px;
   position: absolute;
-  margin-left: 70px;
-  margin-top: 15px;
+  text-align: center;
+  background-color: rgba(245, 40, 40, 0.8);
+}
+
+.notice-num > p {
+  width: 100%;
+  height: 100%;
+  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  font-size: small;
+  position: absolute;
+  margin: auto;
+  margin-top: -20px;
 }
 
 </style>
