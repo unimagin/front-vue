@@ -106,8 +106,6 @@ export default defineComponent({
   },
   mounted() {
     this.timer = setInterval(() => {
-      const now = new Date();
-      console.log(now);
       for (var i = 0; i < this.reservations.length; i++) {
         const reservation = this.reservations[i];
         //5分钟前提醒到达
@@ -115,7 +113,6 @@ export default defineComponent({
           reservation.begin_time - now < 5 * 60 * 1000 &&
           reservation.msg_begin == 0
         ) {
-          console.log("here", reservation.msg_begin);
           this.reservations[i].msg_begin = 1;
           axios
             .post("/api/user/add_message", {
@@ -126,6 +123,7 @@ export default defineComponent({
             .then(() => {
               var unreadNum = parseInt(localStorage.getItem("unreadNum"));
               unreadNum += 1;
+              this.unreadNum = unreadNum;
               localStorage.setItem("unreadNum", String(unreadNum));
             })
             .catch((err) => {
@@ -147,6 +145,7 @@ export default defineComponent({
             .then(() => {
               var unreadNum = parseInt(localStorage.getItem("unreadNum"));
               unreadNum += 1;
+              this.unreadNum = unreadNum;
               localStorage.setItem("unreadNum", String(unreadNum));
             })
             .catch((err) => {

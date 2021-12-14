@@ -39,6 +39,9 @@ export default {
     axios.post('/api/user/look_message', {})
       .then(resp => {
         this.noticeList = resp.data
+        for (var i = 0; i < this.noticeList.length; i++) {
+          this.noticeList[i].time = new Date(this.noticeList[i].time)
+        }
       })
       .catch(err => { console.log(err) })
   }
