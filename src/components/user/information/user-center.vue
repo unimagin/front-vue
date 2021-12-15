@@ -115,7 +115,7 @@
           <el-input v-model="ComputedContractMoney" autocomplete="off" readonly></el-input>
           元
         </el-form-item>
-        <el-button type="primary" round>确认开通</el-button>
+        <el-button type="primary" @click="getContract" round>确认开通</el-button>
       </el-form>
     </el-dialog>
   </div>
@@ -220,14 +220,26 @@ export default {
       })
     },
     getContract() {
-     /* axios.post('/api/user/buy_contract', {
+      this.buyContract = false;
+      this.$showLoading("正在处理")
+      axios.post('/api/user/buy_contract', {
         time: this.ContractForm.time,//时间期限 int
         begin_time: this.ContractForm.begin_time,//每天自动预约的开始时间
         end_time: this.ContractForm.end_time,//每天自动预约的结束时间
         parking_number: this.ContractForm.parking_number,
         car_number: this.ContractForm.car,
         money: this.ContractForm.money
-      })*/
+      }).then(res => {
+        this.user.kind = res.data.kind;
+        this.user.balance = res.data.balance
+        localStorage.setItem('user', JSON.stringify(this.user))
+        this.$finishLoading()
+        location.reload();
+        this.$message.success("处理成功")
+      }).catch(error => {
+        this.$finishLoading()
+        this.$message.error("余额不足或有未填项")
+      })
     },
   },
   created() {
@@ -245,6 +257,14 @@ export default {
     }).then((res) => {
       this.user.car = res.data;
     })
+    axios.get('/api/admin/look_price')
+        .then(resp => {
+          this.vipMoney = resp.data.userPrice[0].price
+          this.ContractMoney = resp.data.userPrice[1].price
+        })
+        .catch(err => {
+          console.log(err)
+        })
   }
 }
 </script>

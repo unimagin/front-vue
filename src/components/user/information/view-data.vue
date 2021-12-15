@@ -1,21 +1,40 @@
 <template>
   <div id="view-data-echarts" style="width: 801px;height: 534px;margin-top: -50px">
-<!--    这是给用户查看预约记录的echarts数据-->
-<!--    <br>-->
-<!--    1. 违约情况-->
-<!--    2. 时间段的预约情况-->
   </div>
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   name: "view-data",
-  methods:{
-    myEcharts(){
+  data() {
+    return {
+      times: [],
+      violation: 0,
+      total: 0,
+    }
+  },
+  computed: {
+    getCredibility() {
+      if (this.total == 0) {
+        return '优秀'
+      }
+      const credits = parseFloat(this.violation) / parseFloat(this.total);
+      if (credits > 0.5) {
+        return "不良"
+      } else if (credits > 0.2) {
+        return "良好";
+      } else {
+        return "优秀";
+      }
+    },
+  },
+  methods: {
+    myEcharts() {
       var myChart = this.$echarts.init(document.getElementById('view-data-echarts'));
-
-      let value = 12;
-      let order = '良好';
+      let value = this.violation;
+      let order = this.getCredibility;
       var option = {
         title: [
           {
@@ -49,12 +68,12 @@ export default {
         ],
         radar: {
           indicator: [
-            { name: '0-4时', max: 6500 },
-            { name: '5-8时', max: 6000 },
-            { name: '9-12时', max: 30000 },
-            { name: '13-16时', max: 38000 },
-            { name: '17-20时', max: 52000 },
-            { name: '21-24时', max: 52000 },
+            {name: '0-4时', max: 3},
+            {name: '5-8时', max: 6},
+            {name: '9-12时', max: 6},
+            {name: '13-16时', max: 6},
+            {name: '17-20时', max: 6},
+            {name: '21-24时', max: 3},
           ],
         },
 
@@ -63,7 +82,7 @@ export default {
             type: 'radar',
             data: [
               {
-                value: [4200, 3000, 20000, 35000, 50000, 18000, 18000],
+                value: this.times,
                 areaStyle: {
                   color: 'rgba(64, 158, 255, 0.2)',
                 },
@@ -74,11 +93,23 @@ export default {
       };
 
       myChart.setOption(option);
-    }
+    },
   },
   mounted() {
-    this.myEcharts();
-  }
+    this.$showLoading("正在拼命加载")
+    axios.post('/api/user/viewData').then(res => {
+      const data = res.data
+      this.times = data.times;
+      this.times.push(this.times[0]);
+      this.times.shift();
+      this.total = data.total;
+      this.violation = data.violation;
+      this.myEcharts();
+      this.$finishLoading()
+    }).catch(error => {
+      this.$finishLoading()
+    });
+  },
 }
 </script>
 
