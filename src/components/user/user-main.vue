@@ -106,6 +106,7 @@ export default defineComponent({
   },
   mounted() {
     this.timer = setInterval(() => {
+      const now = new Date();
       for (var i = 0; i < this.reservations.length; i++) {
         const reservation = this.reservations[i];
         //5分钟前提醒到达
