@@ -68,12 +68,12 @@ export default {
         ],
         radar: {
           indicator: [
-            {name: '0-4时', max: 3},
-            {name: '5-8时', max: 6},
-            {name: '9-12时', max: 6},
-            {name: '13-16时', max: 6},
-            {name: '17-20时', max: 6},
-            {name: '21-24时', max: 3},
+            {name: '0-4时', max: 20},
+            {name: '5-8时', max: 20},
+            {name: '9-12时', max: 20},
+            {name: '13-16时', max: 20},
+            {name: '17-20时', max: 20},
+            {name: '21-24时', max: 20},
           ],
         },
 
